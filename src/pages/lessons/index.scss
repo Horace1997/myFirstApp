@@ -1,0 +1,31 @@
+@import "~taro-ui/dist/style/components/tabs.scss";
+.oppIngCourseItems{
+    width: 90%;
+    margin:30px auto;
+    border-bottom: solid 1px rgba(0,0,0,.1);
+    padding-bottom: 20px;
+    display: flex;
+}
+
+.oppIngCourseCover{
+    flex: 0 0 100px;
+    width: 100px;
+    height: 100px;
+    border:solid black 1px;
+    border-radius: 5px;
+}
+
+.oppIngCourseText{
+    padding-left: 20px;
+    .oppIngCourseName{
+        font-size: 28px;
+        display: block;
+        margin-bottom: 10px;
+    }
+    .oppIngCourseTeachers{
+        display: inline-block;
+        font-size: 24px;
+        margin-right: 10px;
+        color:rgba(0, 0, 0, 0.5);
+    }
+}
