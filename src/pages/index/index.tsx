@@ -5,7 +5,6 @@ import './index.scss';
 import background from "../../public/images/background.png";
 import badge from "../../public/images/badge2.png";
 import err from "../../public/images/home.png";
-
 export default class Index extends Component {
 
   /**
@@ -53,7 +52,7 @@ export default class Index extends Component {
       })
     }
     if(e === 1)[
-      Taro.switchTab({
+      Taro.navigateTo({
         url:"/pages/mine/index"
       })
     ]

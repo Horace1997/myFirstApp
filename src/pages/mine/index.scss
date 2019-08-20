@@ -1,0 +1,52 @@
+@import "~taro-ui/dist/style/components/tab-bar.scss";
+@import "~taro-ui/dist/style/components/badge.scss";
+@import "~taro-ui/dist/style/components/icon.scss";
+@import "~taro-ui/dist/style/components/avatar.scss";
+.pcMessageCard{
+    width: 90%;
+    height: 280px;
+    border-radius: 20px;
+    background-color: pink;
+    margin:0 auto;
+    padding-top: 50px;
+    display: flex;
+    .left{
+        flex: 1;
+        text-align: center;
+        .pcAvatar{
+            margin: 0px auto;
+            margin-bottom: 60px;
+        }
+    }
+    .right{
+        flex: 1;
+        text-align: center;
+        .pcMessage{
+            display: block;
+            margin-bottom: 50px;
+        }
+    }
+
+}
+
+.pcMenu{
+    margin-top: 50px;
+    padding-left: 40px;
+    padding-right: 40px;
+}
+
+.pcMenuItems{
+    height: 80px;
+    border-bottom: 1px solid rgba(0,0,0,.1);
+    position: relative;
+    display: flex;
+    justify-items: center;
+    text{
+        line-height: 80px;
+        margin-left: 20px;
+    }
+    .pcMenuRight{
+        position: absolute;
+        right:40px;
+    }
+}
