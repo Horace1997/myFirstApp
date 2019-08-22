@@ -1,6 +1,5 @@
 import Taro, { Component, Config } from '@tarojs/taro'
 import { View } from '@tarojs/components'
-// import { AtTabs, AtTabsPane, AtTabBar, AtAvatar, AtIcon } from 'taro-ui';
 import './index.scss';
 // import background from "../../public/images/background.png";
 // import badge from "../../public/images/badge2.png";
@@ -22,6 +21,7 @@ export default class Index extends Component {
     componentDidShow() { }
 
     componentDidHide() { }
+    
     handleClick(e) {
         this.setState({
             current: e
@@ -41,12 +41,12 @@ export default class Index extends Component {
      * 提示和声明 navigationBarTextStyle: 'black' | 'white' 类型冲突, 需要显示声明类型
      */
     config: Config = {
-        navigationBarTitleText: '课程详情'
+        navigationBarTitleText: '课程预约'
     }
     render() {
         return (
-            <View>
-                
+            <View className="oppMain">
+                <View className="opp"></View>
             </View>
         )
     }

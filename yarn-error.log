@@ -1,5 +1,5 @@
 Arguments: 
-  /usr/local/Cellar/node/12.1.0/bin/node /usr/local/Cellar/yarn/1.15.2/libexec/bin/yarn.js add ~taro-ui/dist/style/components/tab-bar.scss --silent --no-progress
+  /usr/local/Cellar/node/12.1.0/bin/node /usr/local/Cellar/yarn/1.15.2/libexec/bin/yarn.js add echarts
 
 PATH: 
   /usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin

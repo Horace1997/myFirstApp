@@ -26,7 +26,7 @@ export default class Index extends Component {
       { url: err, name: "err", id: "3" }
     ],
     titleArray: [
-      { text: "关于我们", url: "" }, { text: "关于课程", url: "" }, { text: "预约体验", url: "" }, { text: "活动快讯", url: "" }
+      { text: "关于我们", url: "/pages/about/index" }, { text: "关于课程", url: "/pages/aboutLessons/index" }, { text: "预约体验", url: "/pages/oppointment/index" }, { text: "活动快讯", url: "/pages/static/index" }
     ],
     current: 0,
 
@@ -58,6 +58,11 @@ export default class Index extends Component {
     ]
   }
 
+  toRouter(url){
+    Taro.navigateTo({
+      url
+    })
+  }
 
 
   render() {
@@ -72,10 +77,10 @@ export default class Index extends Component {
           circular
           autoplay={true}>
           {this.state.array &&
-            this.state.array.map(res => {
+            this.state.array.map((res,index) => {
               return (
-                <SwiperItem >
-                  <View className="indexBannerImg" style={{ backgroundImage: `url(${res.url})` }}></View>
+                <SwiperItem key={`sql_${index}`}>
+                  <View className="indexBannerImg"  style={{ backgroundImage: `url(${res.url})` }}></View>
                 </SwiperItem>
               )
 
@@ -85,9 +90,9 @@ export default class Index extends Component {
         </Swiper>
 
         <View className="indexTitle">
-          {this.state.titleArray.map(item => {
+          {this.state.titleArray.map((item,index) => {
             return (
-              <View className="indexTitleItems">
+              <View className="indexTitleItems" onClick={()=>this.toRouter(item.url)} key={`lesson_${index}`}>
                 <View className="indexTitleItemsIcon"></View>
                 <View className="indexTitleItemsText"><Text>{item.text}</Text></View>
               </View>

@@ -20,13 +20,15 @@ class App extends Component {
    */
   config: Config = {
     pages: [
-      'pages/appointment/index',
+      'pages/myAbility/index',
       'pages/index/index',
-      'pages/mine/index',
       'pages/lessons/index',
+      'pages/aboutLessons/index',
+      'pages/mine/index',
+      'pages/oppointment/index',
       'pages/static/index',
-      'pages/about/index'
-      
+      'pages/about/index',
+      'pages/courseDetail/index'
       
     ],
     window: {

@@ -1,6 +1,6 @@
 import Taro, { Component, Config } from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
-import { AtTabs, AtTabsPane, AtTabBar, AtAvatar, AtIcon } from 'taro-ui';
+import { AtTabs, AtTabsPane } from 'taro-ui';
 import './index.scss';
 // import background from "../../public/images/background.png";
 // import badge from "../../public/images/badge2.png";
@@ -55,7 +55,7 @@ export default class Index extends Component {
 
     courseDetail(id:Number){
         Taro.navigateTo({
-            url:`pages/`
+            url:`/pages/courseDetail/index?id=${id}`
         })
     }
     /**
@@ -66,7 +66,7 @@ export default class Index extends Component {
      * 提示和声明 navigationBarTextStyle: 'black' | 'white' 类型冲突, 需要显示声明类型
      */
     config: Config = {
-        navigationBarTitleText: '我的'
+        navigationBarTitleText: '课程'
     }
     render() {
         const tabList = [{ title: '进行中' }, { title: '已结束' }];
@@ -98,6 +98,27 @@ export default class Index extends Component {
                         }
                     </AtTabsPane>
                     <AtTabsPane current={current} index={1}>
+                    {endCourse.map((res,index) => {
+                            return (
+                                <View className="oppIngCourseItems" key={`dh${index}`} onClick={()=>this.courseDetail(res.id)}>
+                                    <View className="oppIngCourseCover" style={{backgroundImage:`url(${res.cover})`}}></View>
+                                    <View className="oppIngCourseText">
+                                        <Text className="oppIngCourseName">{res.title}</Text>
+                                        <Text className="oppIngCourseTeachers">指导老师:</Text>
+                                        {
+                                            res.teachers.map(item=>{
+                                                return(
+                                                    <Text className="oppIngCourseTeachers" key={`tea${index}`}>
+                                                        {item}
+                                                    </Text>
+                                                )
+                                            })
+                                        }
+                                    </View>
+                                </View>
+                            )
+                        })
+                        }
                     </AtTabsPane>
                 </AtTabs>
             </View>

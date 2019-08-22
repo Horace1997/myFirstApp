@@ -1,11 +1,8 @@
 import Taro, { Component, Config } from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
-import { AtTabBar, AtAvatar,AtIcon } from 'taro-ui';
+import { AtTabBar, AtAvatar,AtIcon  } from 'taro-ui';
 import './index.scss';
 import avatar from "../../public/images/login.png";
-// import background from "../../public/images/background.png";
-// import badge from "../../public/images/badge2.png";
-// import err from "../../public/images/home.png";
 
 export default class Index extends Component {
 
@@ -18,8 +15,8 @@ export default class Index extends Component {
       { title: "职业", result: "学生" },
     ],
     menuArray: [
-      { text: "我的课程" ,icon:"star-2",color:"#ff69b4"},
-      { text: "我的能力值",icon:"user",color:"#00bfff" }
+      { text: "我的课程" ,icon:"star-2",color:"#ff69b4",url:"/pages/lessons/index"},
+      { text: "我的能力值",icon:"user",color:"#00bfff",url:"/pages/myAbility/index" }
     ]
   }
   componentWillMount() { }
@@ -52,7 +49,9 @@ export default class Index extends Component {
     return (
       <View>
 
-
+{/* <AtFab>
+  <Text className='at-fab__icon at-icon at-icon-menu'></Text>
+</AtFab> */}
 
         <View className="pcMessageCard">
           <View className="left">
