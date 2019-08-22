@@ -3,6 +3,7 @@ import Taro,{Component} from "@tarojs/taro";
 import * as echarts from "./ec-canvas/ec-canvas";
 
 
+
 class Index extends Component {
 
     state = {
