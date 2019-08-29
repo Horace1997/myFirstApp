@@ -1,23 +1,94 @@
-import PieChart from "../../components/PieChart";
-import {Component} from "@tarojs/taro";
+import Taro, { Component } from "@tarojs/taro";
+import Chart from 'taro-echarts'
+import { View } from "@tarojs/components"
+import {AtProgress,} from "taro-ui"
+export default class Index extends Component {
 
-export default class Index extends Component{
-    componentDidMount() {
-        console.log(this)
-        const chartData = [
-          {value:335, name:'直接访问'},
-          {value:310, name:'邮件营销'},
-          {value:234, name:'联盟广告'},
-          {value:135, name:'视频广告'},
-          {value:1548, name:'搜索引擎'}
-        ];
-        // this.PieChart.refresh(chartData);
-      }
-    //   refPieChart = (node) => this.PieChart = node
+  state={
+    Ability:[
+      
+    ]
+  }
 
-      render(){
-          return(
-            <PieChart></PieChart>
-          )
-      }
+
+  render() {
+    return (
+      <View className="myAbMain">
+        <View className="myAbRadar">
+          <Chart
+            chartId='chart-example-line'
+            option={{
+
+              radar: [
+                {
+                  indicator: [
+                    { text: '盘球', max: 100 },
+                    { text: '传球', max: 100 },
+                    { text: '射门', max: 100 },
+                    { text: '抢断', max: 100 },
+                    { text: '体能', max: 100 },
+                    { text: '过人', max: 100 }
+                  ],
+                  radius: 120,
+                }
+
+              ],
+              series: [
+                {
+                  name: '雷达图',
+                  type: 'radar',
+                  itemStyle: {
+                    emphasis: {
+                      // color: 各异,
+                      lineStyle: {
+                        width: 1
+                      },
+
+                    }
+                  },
+
+                  data: [
+                    {
+                      areaStyle: {
+                        normal: {
+                          color: 'rgba(255, 255, 255, 0.5)'
+                        }
+                      },
+                      textStyle: {
+                        fontSize: 24,
+                        fontWeight: "bold"
+                      }
+                    }
+                  ]
+                },
+                {
+                  name: '成绩单',
+                  type: 'radar',
+                  radarIndex: 0,
+                  data: [
+                    {
+                      value: [80, 80, 95, 70, 70, 60],
+                      name: '李四',
+                      areaStyle: {
+                        normal: {
+                          opacity: 0.6,
+                          color:"#1e90ff"
+                        }
+                      }
+                    }
+                  ]
+                }
+              ]
+            }}
+            height="300px"
+          />
+        </View>
+            {
+
+            }
+        <AtProgress percent={30} strokeWidth={15} color='#FFC82C' status='progress' isHidePercent={true}/>
+      </View>
+
+    )
+  }
 }

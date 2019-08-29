@@ -1,69 +1,68 @@
-// eslint-disable-next-line import/newline-after-import
-import Taro,{Component} from "@tarojs/taro";
-import * as echarts from "./ec-canvas/ec-canvas";
 
+import Taro, { Component } from "@tarojs/taro";
+import * as echarts from "./ec-canvas/echarts";
 
-
-class Index extends Component {
-
-    state = {
-        ec: {
-          lazyLoad: true
+function setChartData(chart, data) {
+  let option = { 
+    radar: {
+      name: {
+        textStyle: {
+          color: '#999',
         }
-     };
-
-    config = {
-        usingComponents: {
-            "ec-canvas": "./ec-canvas/ec-canvas"
-        }
-    };
-
-    refresh(data) {
-        this.Chart.init((canvas, width, height) => {
-          const chart = echarts.init(canvas, null, {
-            width: width,
-            height: height
-          });
-          this.setChartData(chart, data);
-          return chart;
-        });
+      },
+      indicator: data
+    },
+    series: []
+  };
+  if (data && data.dimensions && data.measures) {
+    option.radar.indicator = data.dimensions.data
+    option.series = data.measures.map(item => {
+      return {
+        ...item,
+        type: 'radar',
       }
-     
-      refChart = node => (this.Chart = node);
-
-      setChartData(chart, data) {
-        let option = {
-          series : [
-            {
-              name: '访问来源',
-              type: 'pie',
-              center: ['50%', '50%'],
-              radius: [0, '60%'],
-              data: data,
-              itemStyle: {
-                emphasis: {
-                  shadowBlur: 10,
-                  shadowOffsetX: 0,
-                  shadowColor: 'rgba(0, 0, 0, 0.5)'
-                }
-              }
-            }
-          ]
-        };
-        chart.setOption(option);
-      }
-      
-    render() {
-        return (
-                <ec-canvas
-                  ref={this.refChart}
-                  canvas-id='mychart-area'
-                  ec={this.state.ec}
-                />
-
-
-
-        )
-    }
+    })
+  }
+  chart.setOption(option);
 }
-export default Index
+
+export default class RadarChar extends Component {
+  config = {
+    usingComponents: {
+      "ec-canvas": "/components/ec-canvas/ec-canvas"
+    }
+  };
+
+  constructor(props) {
+    super(props);
+  }
+
+  state = {
+    ec: {
+      lazyLoad: true
+    }
+  };
+
+  refresh(data) {
+    this.Chart.init((canvas, width, height) => {
+      const chart = echarts.init(canvas, null, {
+        width: width,
+        height: height
+      });
+      setChartData(chart, data);
+      return chart;
+    });
+  }
+
+  refChart = node => (this.Chart = node);
+
+  render() {
+    return (
+      <ec-canvas
+        ref={this.refChart}
+        canvas-id='mychart-area'
+        ec={this.state.ec}
+      />
+    );
+  }
+}

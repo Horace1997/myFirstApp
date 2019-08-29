@@ -1,8 +1,8 @@
 Arguments: 
-  /usr/local/Cellar/node/12.1.0/bin/node /usr/local/Cellar/yarn/1.15.2/libexec/bin/yarn.js add echarts
+  /usr/local/Cellar/node/12.1.0/bin/node /usr/local/Cellar/yarn/1.15.2/libexec/bin/yarn.js add 。/images/badge2.png --silent --no-progress
 
 PATH: 
-  /usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin
+  /usr/local/lib/node_modules/npm/node_modules/npm-lifecycle/node-gyp-bin:/Users/huozihao/myFirstApp/node_modules/.bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin
 
 Yarn version: 
   1.15.2
@@ -14,10 +14,14 @@ Platform:
   darwin x64
 
 Trace: 
-  Error: https://registry.yarnpkg.com/taro-ui: ETIMEDOUT
-      at Timeout._onTimeout (/usr/local/Cellar/yarn/1.15.2/libexec/lib/cli.js:130201:19)
-      at listOnTimeout (internal/timers.js:531:17)
-      at processTimers (internal/timers.js:475:7)
+  TypeError [ERR_UNESCAPED_CHARACTERS]: Request path contains unescaped characters
+      at new ClientRequest (_http_client.js:131:13)
+      at Object.request (https.js:305:10)
+      at Request.module.exports.Request.start (/usr/local/Cellar/yarn/1.15.2/libexec/lib/cli.js:130103:32)
+      at Request.module.exports.Request.end (/usr/local/Cellar/yarn/1.15.2/libexec/lib/cli.js:130862:10)
+      at end (/usr/local/Cellar/yarn/1.15.2/libexec/lib/cli.js:129916:14)
+      at Immediate._onImmediate (/usr/local/Cellar/yarn/1.15.2/libexec/lib/cli.js:129930:7)
+      at processImmediate (internal/timers.js:439:21)
 
 npm manifest: 
   {
@@ -61,34 +65,38 @@ npm manifest:
       "@tarojs/taro-swan": "1.3.13",
       "@tarojs/taro-tt": "1.3.13",
       "@tarojs/taro-weapp": "1.3.13",
+      "echarts": "^4.2.1",
+      "moment": "^2.24.0",
       "nerv-devtools": "^1.4.0",
       "nervjs": "^1.4.0",
+      "ta": "^0.0.0",
+      "taro-echarts": "^1.1.0",
       "taro-ui": "^2.2.1"
     },
     "devDependencies": {
-      "@types/react": "^16.4.6",
-      "@types/webpack-env": "^1.13.6",
       "@tarojs/plugin-babel": "1.3.13",
       "@tarojs/plugin-csso": "1.3.13",
       "@tarojs/plugin-sass": "1.3.13",
       "@tarojs/plugin-uglifyjs": "1.3.13",
       "@tarojs/webpack-runner": "1.3.13",
+      "@types/react": "^16.4.6",
+      "@types/webpack-env": "^1.13.6",
+      "@typescript-eslint/parser": "^1.6.0",
+      "babel-eslint": "^8.2.3",
       "babel-plugin-transform-class-properties": "^6.24.1",
       "babel-plugin-transform-decorators-legacy": "^1.3.4",
       "babel-plugin-transform-jsx-stylesheet": "^0.6.5",
       "babel-plugin-transform-object-rest-spread": "^6.26.0",
       "babel-preset-env": "^1.6.1",
-      "babel-eslint": "^8.2.3",
       "eslint": "^5.16.0",
       "eslint-config-taro": "1.3.13",
+      "eslint-plugin-import": "^2.12.0",
       "eslint-plugin-react": "^7.8.2",
       "eslint-plugin-react-hooks": "^1.6.1",
-      "eslint-plugin-import": "^2.12.0",
+      "eslint-plugin-taro": "1.3.13",
       "stylelint": "9.3.0",
       "stylelint-config-taro-rn": "1.3.13",
       "stylelint-taro-rn": "1.3.13",
-      "eslint-plugin-taro": "1.3.13",
-      "@typescript-eslint/parser": "^1.6.0",
       "typescript": "^3.0.1"
     }
   }
@@ -439,7 +447,7 @@ Lockfile:
     resolved "https://registry.yarnpkg.com/@types/prop-types/-/prop-types-15.7.1.tgz#f1a11e7babb0c3cad68100be381d1e064c68f1f6"
     integrity sha512-CFzn9idOEpHrgdw8JsoTkaDDyRWk1jrzIV8djzcgpq0y9tG4B4lFT+Nxh52DVpDXV+n4+NPNv7M1Dj5uMp6XFg==
   
-  "@types/react@^16.4.6":
+  "@types/react@^16.4.6", "@types/react@^16.7.3":
     version "16.9.2"
     resolved "https://registry.yarnpkg.com/@types/react/-/react-16.9.2.tgz#6d1765431a1ad1877979013906731aae373de268"
     integrity sha512-jYP2LWwlh+FTqGd9v7ynUKZzjj98T8x7Yclz479QdRhHfuW9yQ+0jjnD31eXSXutmBpppj5PYNLYLRfnZJvcfg==
@@ -1682,6 +1690,11 @@ Lockfile:
     resolved "https://registry.yarnpkg.com/binary-extensions/-/binary-extensions-1.13.1.tgz#598afe54755b2868a5330d2aff9d4ebb53209b65"
     integrity sha512-Un7MIEDdUC5gNpcGDV97op1Ywk748MpHcFTHoYs6qnj1Z3j7I53VG3nwZhKzoBZmbdRNnb6WRdFlwl7tSDuZGw==
   
+  bind-decorator@^1.0.11:
+    version "1.0.11"
+    resolved "https://registry.yarnpkg.com/bind-decorator/-/bind-decorator-1.0.11.tgz#e41bc06a1f65dd9cec476c91c5daf3978488252f"
+    integrity sha1-5BvAah9l3ZzsR2yRxdrzl4SIJS8=
+  
   block-stream@*:
     version "0.0.9"
     resolved "https://registry.yarnpkg.com/block-stream/-/block-stream-0.0.9.tgz#13ebfe778a03205cfe03751481ebb4b3300c126a"
@@ -2144,7 +2157,7 @@ Lockfile:
       isobject "^3.0.0"
       static-extend "^0.1.1"
   
-  classnames@^2.2.5:
+  classnames@^2.2.5, classnames@^2.2.6:
     version "2.2.6"
     resolved "https://registry.yarnpkg.com/classnames/-/classnames-2.2.6.tgz#43935bffdd291f326dad0a205309b38d00f650ce"
     integrity sha512-JR/iSQOSt+LQIWwrwEzJ9uk0xfN3mTVYMwt1Ir5mUcSN6pU+V4zQFFaJsclJbPuAUQH+yfWef6tm7l1quW3C8Q==
@@ -2651,6 +2664,11 @@ Lockfile:
     resolved "https://registry.yarnpkg.com/date-now/-/date-now-0.1.4.tgz#eaf439fd4d4848ad74e5cc7dbef200672b9e345b"
     integrity sha1-6vQ5/U1ISK105cx9vvIAZyueNFs=
   
+  dayjs@^1.7.7:
+    version "1.8.15"
+    resolved "https://registry.yarnpkg.com/dayjs/-/dayjs-1.8.15.tgz#7121bc04e6a7f2621ed6db566be4a8aaf8c3913e"
+    integrity sha512-HYHCI1nohG52B45vCQg8Re3hNDZbMroWPkhz50yaX7Lu0ATyjGsTdoYZBpjED9ar6chqTx2dmSmM8A51mojnAg==
+  
   debug@*, debug@^4.0.1, debug@^4.1.0:
     version "4.1.1"
     resolved "https://registry.yarnpkg.com/debug/-/debug-4.1.1.tgz#3b72260255109c6b589cee050f1d516139664791"
@@ -2968,6 +2986,13 @@ Lockfile:
     dependencies:
       jsbn "~0.1.0"
       safer-buffer "^2.1.0"
+  
+  echarts@^4.2.1:
+    version "4.2.1"
+    resolved "https://registry.yarnpkg.com/echarts/-/echarts-4.2.1.tgz#9a8ea3b03354f86f824d97625c334cf16965ef03"
+    integrity sha512-pw4xScRPsLegD/cqEcoXRKeA2SD4+s+Kyo0Na166NamOWhzNl2yI5RZ2rE97tBlAopNmhyMeBVpAeD5qb+ee1A==
+    dependencies:
+      zrender "4.0.7"
   
   ee-first@1.1.1:
     version "1.1.1"
@@ -6708,7 +6733,7 @@ Lockfile:
     dependencies:
       asap "~2.0.6"
   
-  prop-types@^15.6.1, prop-types@^15.7.2:
+  prop-types@^15.6.1, prop-types@^15.6.2, prop-types@^15.7.2:
     version "15.7.2"
     resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.7.2.tgz#52c41e75b8c87e72b9d9360e0206b99dcbffa6c5"
     integrity sha512-8QQikdH7//R2vurIJSutZ1smHYTcLpRWEOlHnzcWHmBYrOGUysKwSsrC89BCiFj3CbrfJ/nXFdJepOVrY1GCHQ==
@@ -8126,6 +8151,11 @@ Lockfile:
       dom7 "^2.1.3"
       ssr-window "^1.0.1"
   
+  ta@^0.0.0:
+    version "0.0.0"
+    resolved "https://registry.yarnpkg.com/ta/-/ta-0.0.0.tgz#5e70abe8c534ed345064de48ce85efa7306629a0"
+    integrity sha1-XnCr6MU07TRQZN5IzoXvpzBmKaA=
+  
   table@^4.0.1:
     version "4.0.3"
     resolved "https://registry.yarnpkg.com/table/-/table-4.0.3.tgz#00b5e2b602f1794b9acaf9ca908a76386a7813bc"
@@ -8174,6 +8204,18 @@ Lockfile:
       mkdirp "^0.5.0"
       safe-buffer "^5.1.2"
       yallist "^3.0.3"
+  
+  taro-ui@^2.2.1:
+    version "2.2.1"
+    resolved "https://registry.yarnpkg.com/taro-ui/-/taro-ui-2.2.1.tgz#26f74f1f5e278888a87ee921ac71f33dffcb8601"
+    integrity sha512-m75rwo3HDBW3lcRj8cwzPXYw5komdnttdMn4nzI+npvYF9fjFT2h+DVCX2+vUUm7OkRRo+SrJRGFiBK9K+cqZA==
+    dependencies:
+      "@types/react" "^16.7.3"
+      bind-decorator "^1.0.11"
+      classnames "^2.2.6"
+      dayjs "^1.7.7"
+      lodash "^4.17.10"
+      prop-types "^15.6.2"
   
   terser-webpack-plugin@^1.1.0:
     version "1.4.1"
@@ -9036,3 +9078,8 @@ Lockfile:
       which-module "^1.0.0"
       y18n "^3.2.1"
       yargs-parser "^5.0.0"
+  
+  zrender@4.0.7:
+    version "4.0.7"
+    resolved "https://registry.yarnpkg.com/zrender/-/zrender-4.0.7.tgz#15ae960822f5efed410995d37e5107fe3de10e6d"
+    integrity sha512-TNloHe0ums6zxbHfnaCryM61J4IWDajZwNq6dHk9vfWhhysO/OeFvvR0drBs/nbXha2YxSzfQj2FiCd6RVBe+Q==

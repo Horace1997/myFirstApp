@@ -1,10 +1,14 @@
 import Taro, { Component, Config } from '@tarojs/taro'
 import { View, Text, Swiper, SwiperItem } from '@tarojs/components'
-import { AtTabBar } from 'taro-ui';
+import Modal from "../../components/modal/index";
+import { AtTabBar} from 'taro-ui';
 import './index.scss';
-import background from "../../public/images/background.png";
-import badge from "../../public/images/badge2.png";
-import err from "../../public/images/home.png";
+import background from "./images/background.png";
+import badge from "./images/badge2.png";
+import err from "./images/home.png";
+import { post, baseUrl } from "../../tools/common";
+var moment = require("moment")
+
 export default class Index extends Component {
 
   /**
@@ -18,7 +22,6 @@ export default class Index extends Component {
     navigationBarTitleText: '首页'
   }
 
-
   state = {
     array: [
       { url: background, name: "badge", id: "1" },
@@ -26,17 +29,57 @@ export default class Index extends Component {
       { url: err, name: "err", id: "3" }
     ],
     titleArray: [
-      { text: "关于我们", url: "/pages/about/index" }, { text: "关于课程", url: "/pages/aboutLessons/index" }, { text: "预约体验", url: "/pages/oppointment/index" }, { text: "活动快讯", url: "/pages/static/index" }
+      { text: "关于我们", url: "pages/about/index", cover: `https://football.edisonmiao.com/static/menuIcon/95007c33865525e9c20ebcb1ed7df64.jpg` },
+      { text: "关于课程", url: "pages/aboutLesson/index", cover: `https://football.edisonmiao.com/static/menuIcon/941db3137a63da126dd34672e3f409a.jpg` },
+      { text: "预约体验", url: "pages/oppointment/index", cover: `https://football.edisonmiao.com/static/menuIcon/89dbb2975c66ac1b15837e09d456d5e.jpg` },
+      { text: "活动快讯", url: "pages/static/index", cover: `https://football.edisonmiao.com/static/menuIcon/93cecfc923f09d122f4ce89668813fa.jpg` }
+    ],
+    daysLessons: [
+      {
+        cover: background,
+        desc: "由黄锦麟老师细心指导，为求完成这个完美而对少儿有益的全新课程，让同学们体验到全所未有的痛快",
+        date: 15244123312
+      }
     ],
     current: 0,
-
-
-
+    writeDownMsg:true,
+    form:{
+      phone:"",
+      ability:"",
+      studentName:""
+    }
   }
 
-  componentWillMount() { }
+  componentWillMount() {
 
-  componentDidMount() { }
+    Taro.showShareMenu({
+      withShareTicket: true
+    })
+  }
+
+  componentDidMount() {
+    this.login();
+    Taro.getSetting({
+      success: function (res) {
+        const result = res.authSetting["scope.userInfo"]
+        if (!result) {
+          Taro.redirectTo({
+            url: "static"
+          })
+        } else {
+          Taro.getUserInfo({
+            success: function (res) {
+              let avatar = JSON.parse(res.rawData).avatarUrl
+              Taro.setStorage({
+                key: "avatar",
+                data: avatar,
+              })
+            }
+          })
+        }
+      }
+    })
+  }
 
   componentWillUnmount() { }
 
@@ -45,42 +88,87 @@ export default class Index extends Component {
   componentDidHide() { }
 
 
+  login() {
+    let self = this;
+    Taro.login({
+      success(res) {
+        if (res.code) {
+          self.getUserInfo(res.code); 
+        }
+      }
+    })
+  }
+
+  getDesc(str) {
+    let result;
+    if (str.length > 20) {
+      result = str.slice(0, 20) + "..."
+      return result;
+    }
+    return str;
+  }
+
+  getUserInfo(code) {
+    post(`${baseUrl}/api/userLogin/getUserLoginInfo?code=${code}`).then(res => {
+      if (res.data.resultData === null) {
+        this.setState({
+          writeDownMsg: true
+        })
+      }
+    })
+  }
+
   handleClick(e) {
-    if(e === 0){
+    if (e === 0) {
       Taro.navigateTo({
-        url:""
+        url: ""
       })
     }
-    if(e === 1)[
+    if (e === 1) [
       Taro.navigateTo({
-        url:"/pages/mine/index"
+        url: "/pages/mine/index"
       })
     ]
   }
 
-  toRouter(url){
+  toRouter(url) {
     Taro.navigateTo({
       url
     })
   }
 
+  commit = () =>{
+    this.setState({
+      writeDownMsg:false
+    })
+  }
+
+
+  onChange = (e,key) =>{
+    let form = this.state.form
+    form[key] = e
+    this.setState({
+      form
+    })
+  }
 
   render() {
+    const { daysLessons,writeDownMsg } = this.state
     return (
       <View className="index">
 
         <Swiper
           className='test-h'
-          interval={1000}
+          interval={3000}
           indicatorColor='#999'
           indicatorActiveColor='#333'
           circular
           autoplay={true}>
           {this.state.array &&
-            this.state.array.map((res,index) => {
+            this.state.array.map((res, index) => {
               return (
                 <SwiperItem key={`sql_${index}`}>
-                  <View className="indexBannerImg"  style={{ backgroundImage: `url(${res.url})` }}></View>
+                  <View className="indexBannerImg" style={{ backgroundImage: `url(${res.url})` }}></View>
                 </SwiperItem>
               )
 
@@ -90,10 +178,10 @@ export default class Index extends Component {
         </Swiper>
 
         <View className="indexTitle">
-          {this.state.titleArray.map((item,index) => {
+          {this.state.titleArray.map((item, index) => {
             return (
-              <View className="indexTitleItems" onClick={()=>this.toRouter(item.url)} key={`lesson_${index}`}>
-                <View className="indexTitleItemsIcon"></View>
+              <View className="indexTitleItems" onClick={() => this.toRouter(item.url)} key={`lesson_${index}`}>
+                <View className="indexTitleItemsIcon" style={{ backgroundImage: `url(${item.cover})` }}></View>
                 <View className="indexTitleItemsText"><Text>{item.text}</Text></View>
               </View>
             )
@@ -103,10 +191,24 @@ export default class Index extends Component {
         </View>
 
         <View className="indexMainBody">
-        <Text className="indexMessage">
+          <Text className="indexMessage">
             每日课堂
           </Text>
         </View>
+        {
+          daysLessons.map((item, index) => {
+          return (
+            <View className="indexDaysLessons" key={`duelLesson_${index}`}>
+              <View style={{ backgroundImage: `url(${item.cover})` }} className="indexCardCover"></View>
+              <Text className="indexDaysLessonsDesc">
+                {this.getDesc(item.desc)}
+              </Text>
+
+              <Text className="indexDaysLessonsDate">{moment(item.date).format("YYYY-MM-DD")}</Text>
+            </View>
+          )
+        })
+        }
         <View className="indexMainBody">
           <Text className="indexMessage">
             每日消息
@@ -114,7 +216,6 @@ export default class Index extends Component {
 
         </View>
         <AtTabBar
-        // className="tabBar"
           tabList={[
             { title: '首页', iconType: 'home' },
             { title: '我的', iconType: 'user' },
@@ -125,6 +226,8 @@ export default class Index extends Component {
           onClick={this.handleClick}
           current={this.state.current}
         />
+
+          <Modal commit={this.commit} value={writeDownMsg} onChange={this.onChange}></Modal>
       </View>
 
 

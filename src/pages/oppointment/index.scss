@@ -1,0 +1,12 @@
+.oppMain {
+  padding-left: 20px;
+  padding-right: 20px;
+  position: relative;
+  .oppItems {
+    position: relative;
+    height: 200px;
+    border-radius: 10px;
+    border: solid black 1px;
+    margin-top: 20px;
+  }
+}

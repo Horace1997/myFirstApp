@@ -2,7 +2,7 @@
 	"miniprogramRoot": "dist/",
 	"projectname": "myFirstApp",
 	"description": "微信小程序开发",
-	"appid": "touristappid",
+	"appid": "wx46d7030be2ce1f72",
 	"setting": {
 		"urlCheck": true,
 		"es6": false,

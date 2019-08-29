@@ -9,7 +9,11 @@ export default class Index extends Component {
 
 
     state = {
-   
+        lessonsArray:[
+            {cover:"",id:"1"},
+            {cover:"",id:"3"},
+            {cover:"",id:"2"}
+        ]
         
     }
     componentWillMount() { }
@@ -27,10 +31,9 @@ export default class Index extends Component {
             current: e
         })
     }
-
-    courseDetail(id:Number){
+    makeOppointment(id){
         Taro.navigateTo({
-            url:`pages/courseDetail/index?id=${id}`
+            url:`/pages/makeOppointment/index?id=${id}`
         })
     }
     /**
@@ -44,9 +47,20 @@ export default class Index extends Component {
         navigationBarTitleText: '课程预约'
     }
     render() {
+        const {lessonsArray} = this.state
         return (
             <View className="oppMain">
-                <View className="opp"></View>
+            {
+                lessonsArray.map((res,index)=>{
+                    return(
+                        <View className="oppItems" 
+                        style={{backgroundImage:`url(${res.cover})`}} 
+                        key={`opp${index}`}
+                        onClick={()=>this.makeOppointment(res.id)}
+                        ></View>
+                    )
+                })
+            }
             </View>
         )
     }

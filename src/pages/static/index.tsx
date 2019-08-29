@@ -1,8 +1,7 @@
 import Taro, { Component, Config } from '@tarojs/taro'
-import { View, Text } from '@tarojs/components'
-import { AtTabBar, AtAvatar,AtIcon } from 'taro-ui';
+import { View, Button } from '@tarojs/components'
+// import { AtTabBar, AtAvatar,AtIcon } from 'taro-ui';
 import './index.scss';
-import avatar from "../../public/images/login.png";
 // import background from "../../public/images/background.png";
 // import badge from "../../public/images/badge2.png";
 // import err from "../../public/images/home.png";
@@ -54,59 +53,8 @@ export default class Index extends Component {
 
 
 
-        <View className="pcMessageCard">
-          <View className="left">
-            <AtAvatar
-              image={avatar}
-              circle
-              size="large"
-              className="pcAvatar"
-            ></AtAvatar>
-            <Text>Roger</Text>
-          </View>
-
-          <View className="right">
-            {
-              this.state.massageArray.map(res => {
-                return (
-                  <Text className="pcMessage">
-                    {res.title}:{res.result}
-                  </Text>
-                )
-              })
-            }
-
-          </View>
-
-
-        </View>
-
-        <View className="pcMenu">
-          {this.state.menuArray.map(res => {
-            return (
-              <View className="pcMenuItems">
-                <AtIcon value={res.icon} size={18} color={res.color}></AtIcon>
-                <Text>{res.text}</Text>
-                <AtIcon value="chevron-right" color="#00000019" className="pcMenuRight"></AtIcon>
-              </View>
-            )
-          })
-          }
-
-
-        </View>
-        <AtTabBar
-          tabList={[
-            { title: '首页', iconType: 'home' },
-            { title: '我的', iconType: 'user' },
-          ]}
-          fixed={true}
-          iconSize={22}
-          fontSize={12}
-          onClick={this.handleClick}
-          current={this.state.current}
-        />
-
+<Button open-type="getUserInfo">授权</Button>
+        
       </View>
     )
   }

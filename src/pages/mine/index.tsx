@@ -1,9 +1,8 @@
 import Taro, { Component, Config } from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
-import { AtTabBar, AtAvatar,AtIcon  } from 'taro-ui';
+import { AtTabBar, AtAvatar, AtIcon } from 'taro-ui';
 import './index.scss';
-import avatar from "../../public/images/login.png";
-
+// import avatar from "../../public/images/login.png";
 export default class Index extends Component {
 
 
@@ -12,22 +11,35 @@ export default class Index extends Component {
     massageArray: [
       { title: "段位", result: "铂金" },
       { title: "年龄", result: "16" },
-      { title: "职业", result: "学生" },
+      { title: "位置", result: "前锋" },
     ],
     menuArray: [
-      { text: "我的课程" ,icon:"star-2",color:"#ff69b4",url:"/pages/lessons/index"},
-      { text: "我的能力值",icon:"user",color:"#00bfff",url:"/pages/myAbility/index" }
-    ]
+      { text: "我的课程", icon: "star-2", color: "#ff69b4", url: "/pages/lessons/index" },
+      { text: "我的能力值", icon: "user", color: "#00bfff", url: "/pages/myAbility/index" }
+    ],
+    avatar:""
   }
   componentWillMount() { }
 
-  componentDidMount() { }
+  componentDidMount() {
+    let self = this;
+      avatar:Taro.getStorage({
+        key:"avatar",
+        success:function(res){
+          self.setState({
+            avatar:res.data
+          })
+
+        }
+      })
+   }
 
   componentWillUnmount() { }
 
   componentDidShow() { }
 
   componentDidHide() { }
+
   handleClick(e) {
     if (e === 0) {
       Taro.navigateTo({
@@ -49,34 +61,39 @@ export default class Index extends Component {
     return (
       <View>
 
-{/* <AtFab>
+        {/* <AtFab>
   <Text className='at-fab__icon at-icon at-icon-menu'></Text>
 </AtFab> */}
 
-        <View className="pcMessageCard">
-          <View className="left">
-            <AtAvatar
-              image={avatar}
-              circle
-              size="large"
-              className="pcAvatar"
-            ></AtAvatar>
-            <Text>Roger</Text>
+        <View className="pcMessageCard" style={{ backgroundImage: `url(https://football.edisonmiao.com/static/menuIcon/c221fc3711694619e374b2dd1ea0e27.jpg)` }}>
+          <View className="pcMessageCardSon">
+            <View className="left">
+              <AtAvatar
+                image={this.state.avatar}
+                circle
+                size="large"
+                className="pcAvatar"
+              ></AtAvatar>
+              <View className="pcMessageName">
+                <Text>Roger</Text>
+              </View>
+            </View>
+
+            <View className="right">
+              {
+                this.state.massageArray.map(res => {
+                  return (
+                    <View className="pcMessageContent">
+                      <Text className="pcMessage">
+                        {res.title}:{res.result}
+                      </Text>
+                    </View>
+                  )
+                })
+              }
+
+            </View>
           </View>
-
-          <View className="right">
-            {
-              this.state.massageArray.map(res => {
-                return (
-                  <Text className="pcMessage">
-                    {res.title}:{res.result}
-                  </Text>
-                )
-              })
-            }
-
-          </View>
-
 
         </View>
 

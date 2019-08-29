@@ -1,6 +1,7 @@
 import Taro, { Component, Config } from '@tarojs/taro'
 import Index from './pages/index'
-
+import { Provider } from '@tarojs/redux'
+import configStore from './store'
 import './app.scss'
 
 // 如果需要在 h5 环境中开启 React Devtools
@@ -8,7 +9,7 @@ import './app.scss'
 // if (process.env.NODE_ENV !== 'production' && process.env.TARO_ENV === 'h5')  {
 //   require('nerv-devtools')
 // }
-
+const store = configStore()
 class App extends Component {
 
   /**
@@ -20,16 +21,17 @@ class App extends Component {
    */
   config: Config = {
     pages: [
-      'pages/myAbility/index',
       'pages/index/index',
+      'pages/static/index',
+      'pages/aboutDetail/index',
+      'pages/makeOppointment/index',
+      'pages/oppointment/index',
+      'pages/myAbility/index',
       'pages/lessons/index',
       'pages/aboutLessons/index',
       'pages/mine/index',
-      'pages/oppointment/index',
-      'pages/static/index',
       'pages/about/index',
       'pages/courseDetail/index'
-      
     ],
     window: {
       backgroundTextStyle: 'light',
@@ -39,19 +41,28 @@ class App extends Component {
     }
   }
 
-  componentDidMount () {}
+  componentDidMount() {
 
-  componentDidShow () {}
+  }
 
-  componentDidHide () {}
+  componentDidShow() { }
 
-  componentDidCatchError () {}
+  componentDidHide() { }
+
+  componentDidCatchError() { }
+
 
   // 在 App 类中的 render() 函数没有实际作用
   // 请勿修改此函数
-  render () {
+  render() {
     return (
-      <Index />
+      <Provider store={store}>
+
+        <Index />
+
+      </Provider>
+
+
     )
   }
 }

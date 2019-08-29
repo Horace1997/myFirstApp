@@ -1,6 +1,5 @@
 import Taro, { Component, Config } from '@tarojs/taro'
-import { View, Text } from '@tarojs/components'
-// import { AtTabs, AtTabsPane, AtTabBar, AtAvatar, AtIcon } from 'taro-ui';
+import { View } from '@tarojs/components'
 import './index.scss';
 // import background from "../../public/images/background.png";
 // import badge from "../../public/images/badge2.png";
@@ -10,7 +9,11 @@ export default class Index extends Component {
 
 
     state = {
-   
+        lessonsArray:[
+            {cover:"",id:"1"},
+            {cover:"",id:"3"},
+            {cover:"",id:"2"}
+        ]
         
     }
     componentWillMount() { }
@@ -22,15 +25,15 @@ export default class Index extends Component {
     componentDidShow() { }
 
     componentDidHide() { }
+    
     handleClick(e) {
         this.setState({
             current: e
         })
     }
-
-    courseDetail(id:Number){
+    makeOppointment(id){
         Taro.navigateTo({
-            url:`pages/courseDetail/index?id=${id}`
+            url:`/pages/aboutDetail/index?id=${id}`
         })
     }
     /**
@@ -41,12 +44,23 @@ export default class Index extends Component {
      * 提示和声明 navigationBarTextStyle: 'black' | 'white' 类型冲突, 需要显示声明类型
      */
     config: Config = {
-        navigationBarTitleText: '我的'
+        navigationBarTitleText: '课程预约'
     }
     render() {
+        const {lessonsArray} = this.state
         return (
-            <View>
-                <Text>真的好难啊</Text>
+            <View className="oppMain">
+            {
+                lessonsArray.map((res,index)=>{
+                    return(
+                        <View className="oppItems" 
+                        style={{backgroundImage:`url(${res.cover})`}} 
+                        key={`opp${index}`}
+                        onClick={()=>this.makeOppointment(res.id)}
+                        ></View>
+                    )
+                })
+            }
             </View>
         )
     }
