@@ -1,13 +1,15 @@
 import Taro, { Component, Config } from '@tarojs/taro'
-import { View, Text } from '@tarojs/components'
+import { View, Text ,Button} from '@tarojs/components'
 import { AtTabBar, AtAvatar, AtIcon } from 'taro-ui';
 import './index.scss';
+import { image_url } from '../../tools/common';
 // import avatar from "../../public/images/login.png";
 export default class Index extends Component {
 
 
   state = {
     current: 1,
+    authourize: false,
     massageArray: [
       { title: "段位", result: "铂金" },
       { title: "年龄", result: "16" },
@@ -17,24 +19,17 @@ export default class Index extends Component {
       { text: "我的课程", icon: "star-2", color: "#ff69b4", url: "/pages/lessons/index" },
       { text: "我的能力值", icon: "user", color: "#00bfff", url: "/pages/myAbility/index" }
     ],
-    avatar:""
+    pcMsg: undefined
   }
-  componentWillMount() { }
+  componentWillMount() {
+  
+  }
 
   componentDidMount() {
-    let self = this;
-      avatar:Taro.getStorage({
-        key:"avatar",
-        success:function(res){
-          self.setState({
-            avatar:res.data
-          })
+    this.checkAuthorize();
+  }
 
-        }
-      })
-   }
 
-  componentWillUnmount() { }
 
   componentDidShow() { }
 
@@ -57,50 +52,101 @@ export default class Index extends Component {
   config: Config = {
     navigationBarTitleText: '我的'
   }
+
+  checkAuthorize = () =>{
+    let self = this
+    Taro.getSetting({
+      success:function(res){
+        if(res.authSetting['scope.userInfo']){
+          Taro.getUserInfo({
+            success:function(result){
+              self.setState({
+                pcMsg:result.userInfo,
+                authourize:true
+              })
+            }
+          })
+        }
+    }
+    })
+  }
+
+
+  changePages = (result) => {
+    Taro.navigateTo({
+      url: result.url
+    })
+  }
+  callBack =(e)=>{
+    this.setState({
+      pcMsg:e.detail.userInfo,
+      authourize:true
+    })
+  }
+  authorize = () =>{
+
+    Taro.authorize({
+      scope: 'scope.userInfo',
+  })
+  }
   render() {
+    const { authourize,pcMsg } = this.state
     return (
       <View>
 
-        {/* <AtFab>
-  <Text className='at-fab__icon at-icon at-icon-menu'></Text>
-</AtFab> */}
-
         <View className="pcMessageCard" style={{ backgroundImage: `url(https://football.edisonmiao.com/static/menuIcon/c221fc3711694619e374b2dd1ea0e27.jpg)` }}>
-          <View className="pcMessageCardSon">
-            <View className="left">
-              <AtAvatar
-                image={this.state.avatar}
+          {authourize &&
+            <View className="pcMessageCardSon">
+              <View className="left">
+                <AtAvatar
+                  image={pcMsg.avatarUrl}
+                  circle
+                  size="large"
+                  className="pcAvatar"
+                ></AtAvatar>
+                <View className="pcMessageName">
+                  <Text>{pcMsg.nickName}</Text>
+                </View>
+              </View>
+
+              <View className="right">
+                {
+                  this.state.massageArray.map(res => {
+                    return (
+                      <View className="pcMessageContent">
+                        <Text className="pcMessage">
+                          {res.title}:{res.result}
+                        </Text>
+                      </View>
+                    )
+                  })
+                }
+
+              </View>
+            </View>}
+
+
+          {!authourize &&
+            <View className="authorizeBtn" onClick={this.authorize}>
+            <View>
+            <AtAvatar
+                image={`${image_url}/avatar/d41d8cd98f00b204e9800998ecf8427e.png`}
                 circle
                 size="large"
-                className="pcAvatar"
-              ></AtAvatar>
-              <View className="pcMessageName">
-                <Text>Roger</Text>
+                className="pcAvatars">
+              </AtAvatar>
+            </View>
+
+              <View className="pcCardAuthorize" >
+              <Button openType="getUserInfo"  onGetuserinfo={this.callBack} className="getUserInfoBtn">你现在还是游客，点击授权</Button>
               </View>
-            </View>
-
-            <View className="right">
-              {
-                this.state.massageArray.map(res => {
-                  return (
-                    <View className="pcMessageContent">
-                      <Text className="pcMessage">
-                        {res.title}:{res.result}
-                      </Text>
-                    </View>
-                  )
-                })
-              }
-
-            </View>
-          </View>
-
+            </View>}
         </View>
 
         <View className="pcMenu">
-          {this.state.menuArray.map(res => {
+          {this.state.menuArray.map((res, index) => {
             return (
-              <View className="pcMenuItems">
+              <View className="pcMenuItems" onClick={() => this.changePages(res)} key={`pcMenuItems_${index}`}>
                 <AtIcon value={res.icon} size={18} color={res.color}></AtIcon>
                 <Text>{res.text}</Text>
                 <AtIcon value="chevron-right" color="#00000019" className="pcMenuRight"></AtIcon>

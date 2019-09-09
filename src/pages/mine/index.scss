@@ -53,12 +53,38 @@
 
 }
 
+.authorizeBtn{
+    display: flex;
+    view{
+        .pcAvatars{
+            margin: 50px auto;
+        }
+        flex:0 0 40%;
+    }
+}
+.pcCardAuthorize{
+    // margin:50px auto;
+    margin-top: 60px;
+    text-align: left;
+    flex:1;
+    button{
+        font-size: 28px;
+    }
+}
+
 .pcMenu{
     margin-top: 50px;
     padding-left: 40px;
     padding-right: 40px;
 }
 
+.getUserInfoBtn{
+    background-color: transparent;
+    color:white;
+    &::after{
+        display: none;
+    }
+}
 .pcMenuItems{
     height: 80px;
     border-bottom: 1px solid rgba(0,0,0,.1);

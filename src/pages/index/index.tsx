@@ -1,12 +1,10 @@
 import Taro, { Component, Config } from '@tarojs/taro'
 import { View, Text, Swiper, SwiperItem } from '@tarojs/components'
 import Modal from "../../components/modal/index";
-import { AtTabBar} from 'taro-ui';
+import { AtTabBar,AtToast } from 'taro-ui';
 import './index.scss';
-import background from "./images/background.png";
-import badge from "./images/badge2.png";
-import err from "./images/home.png";
-import { post, baseUrl } from "../../tools/common";
+
+import { post, baseUrl,get, image_url } from "../../tools/common";
 var moment = require("moment")
 
 export default class Index extends Component {
@@ -23,35 +21,32 @@ export default class Index extends Component {
   }
 
   state = {
+    showToast:false,
     array: [
-      { url: background, name: "badge", id: "1" },
-      { url: badge, name: "background", id: "2" },
-      { url: err, name: "err", id: "3" }
+      { url: require('../../assets/images/background.png'), name: "badge", id: "1" },
+      { url: require("../../assets/images/badge2.png"), name: "background", id: "2" },
+      { url: require("../../assets/images/home.png"), name: "err", id: "3" }
     ],
     titleArray: [
-      { text: "关于我们", url: "pages/about/index", cover: `https://football.edisonmiao.com/static/menuIcon/95007c33865525e9c20ebcb1ed7df64.jpg` },
-      { text: "关于课程", url: "pages/aboutLesson/index", cover: `https://football.edisonmiao.com/static/menuIcon/941db3137a63da126dd34672e3f409a.jpg` },
-      { text: "预约体验", url: "pages/oppointment/index", cover: `https://football.edisonmiao.com/static/menuIcon/89dbb2975c66ac1b15837e09d456d5e.jpg` },
-      { text: "活动快讯", url: "pages/static/index", cover: `https://football.edisonmiao.com/static/menuIcon/93cecfc923f09d122f4ce89668813fa.jpg` }
+      { text: "关于我们", url: "/pages/about/index", cover: `https://football.edisonmiao.com/static/menuIcon/95007c33865525e9c20ebcb1ed7df64.jpg` },
+      { text: "关于课程", url: "/pages/aboutLessons/index", cover: `https://football.edisonmiao.com/static/menuIcon/941db3137a63da126dd34672e3f409a.jpg` },
+      { text: "预约体验", url: "/pages/oppointment/index", cover: `https://football.edisonmiao.com/static/menuIcon/89dbb2975c66ac1b15837e09d456d5e.jpg` },
+      { text: "活动快讯", url: "/pages/static/index", cover: `https://football.edisonmiao.com/static/menuIcon/93cecfc923f09d122f4ce89668813fa.jpg` }
     ],
     daysLessons: [
-      {
-        cover: background,
-        desc: "由黄锦麟老师细心指导，为求完成这个完美而对少儿有益的全新课程，让同学们体验到全所未有的痛快",
-        date: 15244123312
-      }
     ],
     current: 0,
-    writeDownMsg:true,
-    form:{
-      phone:"",
-      ability:"",
-      studentName:""
+    writeDownMsg: false,
+    level:[
+      "黄铜","白银","黄金","铂金"
+    ],
+    form: {
+      phone: "",
+      studentName: ""
     }
   }
 
   componentWillMount() {
-
     Taro.showShareMenu({
       withShareTicket: true
     })
@@ -79,6 +74,15 @@ export default class Index extends Component {
         }
       }
     })
+    
+    get(`${baseUrl}/api/courseDetail/getCourseDetailLastThree`).then(res=>{
+      console.log(res)
+      this.setState({
+        daysLessons:res.data.resultData
+      })
+
+    })
+    
   }
 
   componentWillUnmount() { }
@@ -93,7 +97,7 @@ export default class Index extends Component {
     Taro.login({
       success(res) {
         if (res.code) {
-          self.getUserInfo(res.code); 
+          self.getUserInfo(res.code);
         }
       }
     })
@@ -137,14 +141,35 @@ export default class Index extends Component {
     })
   }
 
-  commit = () =>{
+  commit = () => {
+    const {form} = this.state
+    if(this.validate() !== true){
+      this.setState({
+        showToast:true
+      })
+      return;
+    }
+    post(`${baseUrl}/api/userLogin/bindStudentById`,{
+      ...form,
+    })
     this.setState({
-      writeDownMsg:false
+      writeDownMsg: false
     })
   }
 
+  validate = () => {
+    const {form} = this.state
+    if(!(/^1(3|4|5|6|7|8|9)\d{9}$/.test(form.phone))){
+      return "手机号"
+    }
+    if(!form.studentName){
+      return "学生姓名"
+    }
+    return true
+  }
 
-  onChange = (e,key) =>{
+
+  onChange = (e, key) => {
     let form = this.state.form
     form[key] = e
     this.setState({
@@ -153,7 +178,8 @@ export default class Index extends Component {
   }
 
   render() {
-    const { daysLessons,writeDownMsg } = this.state
+    const { daysLessons, writeDownMsg,level } = this.state
+    
     return (
       <View className="index">
 
@@ -197,17 +223,18 @@ export default class Index extends Component {
         </View>
         {
           daysLessons.map((item, index) => {
-          return (
-            <View className="indexDaysLessons" key={`duelLesson_${index}`}>
-              <View style={{ backgroundImage: `url(${item.cover})` }} className="indexCardCover"></View>
-              <Text className="indexDaysLessonsDesc">
-                {this.getDesc(item.desc)}
-              </Text>
+            return (
+              <View className="indexDaysLessons" key={`duelLesson_${index}`}>
+                <View style={{ backgroundImage: `url(${image_url}${item.courseType.cover})` }} className="indexCardCover"></View>
+                <Text className="indexDaysLessonsDesc">
+                  {/* {this.getDesc(item.classContent)} */}
+                  {!!item.classContent?this.getDesc(item.classContent):"暂无描述"}
+                </Text>
 
-              <Text className="indexDaysLessonsDate">{moment(item.date).format("YYYY-MM-DD")}</Text>
-            </View>
-          )
-        })
+                <Text className="indexDaysLessonsDate">{moment(item.classStartTime).format("YYYY-MM-DD")}</Text>
+              </View>
+            )
+          })
         }
         <View className="indexMainBody">
           <Text className="indexMessage">
@@ -227,7 +254,20 @@ export default class Index extends Component {
           current={this.state.current}
         />
 
-          <Modal commit={this.commit} value={writeDownMsg} onChange={this.onChange}></Modal>
+        <Modal 
+        commit={this.commit} 
+        value={writeDownMsg} 
+        onChange={this.onChange} 
+        level={level}>
+        </Modal>
+
+        <AtToast isOpened={this.state.showToast}
+        onClose={()=>{
+          this.setState({
+            showToast:false
+          })
+        }}
+        text={`${this.validate()}有误,请重新输入`} icon="{icon}" status="error" duration={2000}></AtToast>
       </View>
 
 

@@ -41,7 +41,6 @@ export default class Index extends Component {
             url: `/pages/aboutDetail/index?id=${id}`
         })
     }
-
     getStatus(status) {
         let result;
         switch (status) {

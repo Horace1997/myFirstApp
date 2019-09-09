@@ -1,6 +1,7 @@
 import Taro, { Component, Config } from '@tarojs/taro'
 import { View } from '@tarojs/components'
 import './index.scss';
+import {get,baseUrl,image_url} from "../../tools/common"
 // import background from "../../public/images/background.png";
 // import badge from "../../public/images/badge2.png";
 // import err from "../../public/images/home.png";
@@ -10,15 +11,19 @@ export default class Index extends Component {
 
     state = {
         lessonsArray:[
-            {cover:"",id:"1"},
-            {cover:"",id:"3"},
-            {cover:"",id:"2"}
+ 
         ]
         
     }
     componentWillMount() { }
 
-    componentDidMount() { }
+    componentDidMount() {
+        get(`${baseUrl}/api/courseType/getCourseTypeList`).then(res=>{
+            this.setState({
+                lessonsArray:res.data.resultData
+            })
+        })
+     }
 
     componentWillUnmount() { }
 
@@ -54,7 +59,7 @@ export default class Index extends Component {
                 lessonsArray.map((res,index)=>{
                     return(
                         <View className="oppItems" 
-                        style={{backgroundImage:`url(${res.cover})`}} 
+                        style={{backgroundImage:`url(${image_url}${res.cover})`}} 
                         key={`opp${index}`}
                         onClick={()=>this.makeOppointment(res.id)}
                         ></View>
