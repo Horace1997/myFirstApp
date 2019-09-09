@@ -23,9 +23,9 @@ export default class Index extends Component {
   state = {
     showToast:false,
     array: [
-      { url: require('../../assets/images/background.png'), name: "badge", id: "1" },
-      { url: require("../../assets/images/badge2.png"), name: "background", id: "2" },
-      { url: require("../../assets/images/home.png"), name: "err", id: "3" }
+      { url: require('../../assets/images/background.jpeg'), name: "badge", id: "1" },
+      { url: require("../../assets/images/background2.jpeg"), name: "background", id: "2" },
+      { url: require("../../assets/images/background.jpeg"), name: "err", id: "3" }
     ],
     titleArray: [
       { text: "关于我们", url: "/pages/about/index", cover: `https://football.edisonmiao.com/static/menuIcon/95007c33865525e9c20ebcb1ed7df64.jpg` },
