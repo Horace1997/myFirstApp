@@ -5,10 +5,24 @@ import './index.scss';
 import { image_url } from '../../tools/common';
 import Modal from "../../components/modal/index"
 import { addStudentMessage } from "../../service/api/api";
+
+interface State{
+  current:number,
+  currentStudentData:any,
+  studentNameList:any,
+  authourize:undefined|number,
+  write:boolean,
+  courseData:any,
+  massageArray:Array<string>,
+  menuArray:Array<object>,
+  pcMsg:any,
+  name:string,
+  phone:string|number
+}
 export default class Index extends Component {
 
 
-  state = {
+  state:State = {
     current: 1,
     currentStudentData: {},
     studentNameList: [],
@@ -127,7 +141,7 @@ export default class Index extends Component {
 
   }
 
-  changeStudent = (e) => {
+  changeStudent = (e):void => {
     let name = this.state.studentNameList[e.detail.value];
     let result = this.state.courseData.studentList.filter((v:any)=>v.name === name)
 
@@ -143,9 +157,8 @@ export default class Index extends Component {
   }
 
   commit = () => {
-
     const { courseData, name, phone } = this.state
-    addStudentMessage({ openId: courseData.openId, name, phone }).then(res => {
+    addStudentMessage({ openId: courseData.openId, name, phone }).then(() => {
       this.setState({
         write: false
       })
@@ -244,7 +257,7 @@ export default class Index extends Component {
         </View>
 
         <View className="pcMenu">
-          {this.state.menuArray.map((res, index) => {
+          {this.state.menuArray.map((res:any, index) => {
             return (
               <View className="pcMenuItems" onClick={() => this.changePages(res)} key={`pcMenuItems_${index}`}>
                 <AtIcon value={res.icon} size={18} color={res.color}></AtIcon>
