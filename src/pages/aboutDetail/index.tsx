@@ -1,6 +1,7 @@
 import Taro, { Component, Config } from '@tarojs/taro'
-import { View, Swiper, SwiperItem, Text } from '@tarojs/components'
+import { View, Swiper, SwiperItem, Text, } from '@tarojs/components'
 import './index.scss';
+import { image_url } from '../../tools/common';
 
 // import background from "../../public/images/background.png";
 // import badge from "../../public/images/badge2.png";
@@ -19,11 +20,18 @@ export default class Index extends Component {
         lessonsStatus: 1,
         lessonDesc: "由黄锦麟老师细心指导，为求完成这个完美而对少儿有益的全新课程，让同学们体验到全所未有的痛快",
         lessonsStudentCensus: 1,
-        lessonsClassCensus: 1
+        lessonsClassCensus: 1,
+        course:{}
     }
     componentWillMount() { }
 
-    componentDidMount() { }
+    componentDidMount() {
+        let course = JSON.parse(this.$router.params.id)
+
+        this.setState({
+            course
+        })
+    }
 
     componentWillUnmount() { }
 
@@ -66,25 +74,23 @@ export default class Index extends Component {
         navigationBarTitleText: '课程介绍'
     }
     render() {
-        const { lessonsArray, lessonsName, lessonsStatus, lessonDesc, lessonsStudentCensus, lessonsClassCensus } = this.state
+        const { lessonsArray, lessonsName, lessonsStatus, lessonDesc, lessonsStudentCensus, lessonsClassCensus,course } = this.state
         return (
             <View className="aboutDetailMain">
                 <Swiper>
-                    {lessonsArray.map((item, index) => {
-                        return (
-                            <SwiperItem key={`cover_${index}`}>
-                                <View className="aboutDetailSwiperItem" style={{ backgroundImage: `url(${item.cover})` }}>
-                                    {item.id}
+                            <SwiperItem> 
+                                <View style={{backgroundImage:`url(${image_url+course.cover})`}} className="aboutDetailSwiperItem"
+                                >
                                 </View>
-                            </SwiperItem>
-                        )
-                    })}
+                             </SwiperItem> 
+                       )
+
                 </Swiper>
 
                 <View className="aboutDetailTitle">
                     <Text className="aboutDetailStatus" style={{ backgroundColor: `${this.getStatus(lessonsStatus).color}` }}>{this.getStatus(lessonsStatus).text}</Text>
-                    <Text className="aboutDetailName">{lessonsName}</Text>
-                    <Text className="aboutDetailDesc">{lessonDesc}</Text>
+                    <Text className="aboutDetailName">{course.name}</Text>
+                    <Text className="aboutDetailDesc">{course.description}</Text>
                     <View className="aboutDetailCard">
                         <View className="aboutDetailCardTitle">
                             <Text className="aboutDetailCardTitleText">学员人数</Text>

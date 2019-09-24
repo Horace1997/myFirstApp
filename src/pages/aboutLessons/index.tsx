@@ -1,7 +1,7 @@
 import Taro, { Component, Config } from '@tarojs/taro'
 import { View } from '@tarojs/components'
 import './index.scss';
-import { get, baseUrl ,image_url} from "../../tools/common";
+import { get, baseUrl, image_url } from "../../tools/common";
 // import background from "../../public/images/background.png";
 // import badge from "../../public/images/badge2.png";
 // import err from "../../public/images/home.png";
@@ -9,36 +9,36 @@ export default class Index extends Component {
 
 
     state = {
-        lessonsArray:[
+        lessonsArray: [
         ]
-        
+
     }
     componentWillMount() { }
 
     componentDidMount() {
-
-     }
-
-    componentWillUnmount() { }
-
-    componentDidShow() { 
-        get(`${baseUrl}/api/courseType/getCourseTypeList`).then(res=>{
+        get(`${baseUrl}/api/courseType/getCourseTypeList`).then(res => {
             this.setState({
-                lessonsArray:res.data.resultData
+                lessonsArray: res.data.resultData
             })
         })
     }
 
+    componentWillUnmount() { }
+
+    componentDidShow() {
+
+    }
+
     componentDidHide() { }
-    
+
     handleClick(e) {
         this.setState({
             current: e
         })
     }
-    makeOppointment(id){
+    makeOppointment(id) {
         Taro.navigateTo({
-            url:`/pages/aboutDetail/index?id=${id}`
+            url: `/pages/aboutDetail/index?id=${JSON.stringify(id)}`
         })
     }
     /**
@@ -52,20 +52,26 @@ export default class Index extends Component {
         navigationBarTitleText: '课程预约'
     }
     render() {
-        const {lessonsArray} = this.state
+        const { lessonsArray } = this.state
         return (
             <View className="oppMain">
-            {
-                lessonsArray.map((res,index)=>{
-                    return(
-                        <View className="oppItems" 
-                        style={{backgroundImage:`url(${image_url}${res.cover})`}} 
-                        key={`opp${index}`}
-                        onClick={()=>this.makeOppointment(res.id)}
-                        ></View>
-                    )
-                })
-            }
+                {
+                    lessonsArray.map((res, index) => {
+                        return (
+
+                                
+                                    <View>
+                                        {res.cover&&res.courseDetails.length>0&&
+                                        <View className="oppItems"
+                                            style={{ backgroundImage: `url(${image_url}${res.cover})` }}
+                                            key={`opp${index}`}
+                                            onClick={() => this.makeOppointment(res)}
+                                        ></View>}
+                                    </View>
+                            
+                        )
+                    })
+                }
             </View>
         )
     }

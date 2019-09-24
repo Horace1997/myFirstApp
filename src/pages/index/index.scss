@@ -10,6 +10,8 @@
     position: fixed;
     bottom: 0;
   }
+  .indexBannerImgContainer{
+    text-align: center;
   .indexBannerImg {
     width: 90%;
     height: 300px;
@@ -19,7 +21,7 @@
     background-position: center;
     background-size: cover;
   }
-
+  }
   .indexMainBody {
     margin-top: 10px;
     padding-left: 40px;

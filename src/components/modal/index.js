@@ -1,34 +1,44 @@
-import { Button, View, Picker, Text } from "@tarojs/components"
+import { Button, } from "@tarojs/components"
 import Taro, { Component } from "@tarojs/taro";
 import { AtModal, AtModalHeader, AtModalContent, AtModalAction, AtInput } from 'taro-ui';
 
 class Modal extends Component {
-  state = {
-    ability: ""
+  static defaultProps = {
+    phoneNum: undefined
   }
-  onChange(value, key) {
+  state = {
+    disBol: false
+  }
 
+  componentDidMount() {
+    if (this.props.phoneNum) {
+      this.setState({
+        disBol: true
+      })
+    }
+  }
+
+  onChange(value, key) {
     this.props.onChange(value, key)
   }
-
   commit() {
     const { commit } = this.props
     commit()
   }
 
-  selector = (e) => {
-    let result = this.props.level[e.detail.value]
-    this.setState({
-      ability: result
-    })
-    this.onChange(result, "ability")
+  selector = () => {
+    // let result = this.props.level[e.detail.value]
+    // this.setState({
+    //   ability: result
+    // })
+    // this.onChange(result, "ability")
 
   }
 
 
 
   render() {
-    const { value, level } = this.props;
+    const { value } = this.props;
     return (
       <AtModal isOpened={value}
         closeOnClickOverlay={false}
@@ -39,7 +49,9 @@ class Modal extends Component {
 
             title='手机号码'
             type='number'
+            value={this.props.phoneNum}
             placeholder='请填写手机号'
+            disabled={this.state.disBol}
             onChange={e => this.onChange(e, "phone")}
           ></AtInput>
 
@@ -49,25 +61,14 @@ class Modal extends Component {
             title='学生姓名'
             type='text'
             placeholder='请填写学生姓名'
-            onChange={e => this.onChange(e, "studentName")}
+            onChange={e => this.onChange(e, "name")}
 
           ></AtInput>
 
-
-          {/* <View style={{ paddingTop: "15px", paddingBottom: "15px", paddingLeft: "15px" }}>
-            <Picker
-              mode='selector'
-              range={level}
-              onChange={
-                e => this.selector(e)
-              }
-            >
-              <Text>当前能力估值:{this.state.ability}</Text>
-            </Picker>
-          </View> */}
         </AtModalContent>
         <AtModalAction>
-          <Button onClick={this.commit}>确定</Button> </AtModalAction>
+          <Button onClick={this.commit}>确定</Button>
+        </AtModalAction>
       </AtModal>
     )
   }

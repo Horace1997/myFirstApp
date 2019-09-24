@@ -40,7 +40,16 @@ export default class Index extends Component {
     }
     componentWillMount() { }
 
-    componentDidMount() { }
+    componentDidMount() { 
+
+        Taro.getStorage({
+            key:`data`,
+            success(res){
+                let data = JSON.parse(res.data)
+                console.log(data)
+            }
+        })
+    }
 
     componentWillUnmount() { }
 

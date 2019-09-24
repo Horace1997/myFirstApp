@@ -24,7 +24,9 @@ export const post = (url,data)=>{
         url,
         method:"POST",
         data,
-        header:"",
+        header:{
+          "Content-Type":"application/x-www-form-urlencoded"
+        },
         success:function(res){
           return res.data
         }
@@ -33,10 +35,11 @@ export const post = (url,data)=>{
 }
 
 
+
 export default {
     get,
     post,
     baseUrl,
     appID,
-    appSecret
+    appSecret,
 }

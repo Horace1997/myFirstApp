@@ -4,6 +4,11 @@ import { View } from "@tarojs/components"
 import {AtProgress,} from "taro-ui"
 export default class Index extends Component {
 
+  componentDidMount(){
+    
+  }
+
+
   state={
     Ability:[
       

@@ -1,10 +1,10 @@
 import Taro, { Component, Config } from '@tarojs/taro'
-import { View, Text, Swiper, SwiperItem } from '@tarojs/components'
+import { View, Text, Swiper, SwiperItem, Image } from '@tarojs/components'
 import Modal from "../../components/modal/index";
-import { AtTabBar,AtToast } from 'taro-ui';
+import { AtTabBar, AtToast } from 'taro-ui';
 import './index.scss';
-
-import { post, baseUrl,get, image_url } from "../../tools/common";
+import { addStudentMessage, getLesson, getUserInformation } from "../../service/api/api"
+import { image_url } from "../../tools/common";
 var moment = require("moment")
 
 export default class Index extends Component {
@@ -21,7 +21,7 @@ export default class Index extends Component {
   }
 
   state = {
-    showToast:false,
+    showToast: false,
     array: [
       { url: require('../../assets/images/background.jpeg'), name: "badge", id: "1" },
       { url: require("../../assets/images/background2.jpeg"), name: "background", id: "2" },
@@ -34,15 +34,22 @@ export default class Index extends Component {
       { text: "活动快讯", url: "/pages/static/index", cover: `https://football.edisonmiao.com/static/menuIcon/93cecfc923f09d122f4ce89668813fa.jpg` }
     ],
     daysLessons: [
+      {
+        classContent: "",
+        classStartTime: "",
+        courseType: {
+          cover: ""
+        }
+      }
     ],
     current: 0,
     writeDownMsg: false,
-    level:[
-      "黄铜","白银","黄金","铂金"
+    level: [
+      "黄铜", "白银", "黄金", "铂金"
     ],
     form: {
       phone: "",
-      studentName: ""
+      name: ""
     }
   }
 
@@ -54,42 +61,13 @@ export default class Index extends Component {
 
   componentDidMount() {
     this.login();
-    Taro.getSetting({
-      success: function (res) {
-        const result = res.authSetting["scope.userInfo"]
-        if (!result) {
-          Taro.redirectTo({
-            url: "static"
-          })
-        } else {
-          Taro.getUserInfo({
-            success: function (res) {
-              let avatar = JSON.parse(res.rawData).avatarUrl
-              Taro.setStorage({
-                key: "avatar",
-                data: avatar,
-              })
-            }
-          })
-        }
-      }
-    })
-    
-    get(`${baseUrl}/api/courseDetail/getCourseDetailLastThree`).then(res=>{
-      console.log(res)
-      this.setState({
-        daysLessons:res.data.resultData
-      })
 
-    })
-    
+    this.getPermit();
+
+    this.getLessons();
+
   }
 
-  componentWillUnmount() { }
-
-  componentDidShow() { }
-
-  componentDidHide() { }
 
 
   login() {
@@ -103,6 +81,36 @@ export default class Index extends Component {
     })
   }
 
+  getLessons = () => {
+    getLesson().then(res => {
+      console.log(res.data)
+      this.setState({
+        daysLessons: res.data.resultData
+      })
+
+    })
+  }
+
+  getPermit = () => {
+    Taro.getSetting({
+      success: function (res) {
+        const result = res.authSetting["scope.userInfo"]
+        if(result){
+          Taro.getUserInfo({
+            success: function (res) {
+              let avatar = JSON.parse(res.rawData).avatarUrl
+              Taro.setStorage({
+                key: "avatar",
+                data: avatar,
+              })
+            }
+          })
+        }
+      }
+    })
+  }
+
+
   getDesc(str) {
     let result;
     if (str.length > 20) {
@@ -113,12 +121,23 @@ export default class Index extends Component {
   }
 
   getUserInfo(code) {
-    post(`${baseUrl}/api/userLogin/getUserLoginInfo?code=${code}`).then(res => {
-      if (res.data.resultData === null) {
+    getUserInformation(code).then(res => {
+      if (!res.data.resultData.studentList) {
         this.setState({
           writeDownMsg: true
         })
       }
+      if (res.data.resultData) {
+        let data = JSON.stringify(res.data.resultData)
+        Taro.setStorage({
+          key: `data`,
+          data
+        })
+      }
+
+
+
+
     })
   }
 
@@ -142,27 +161,38 @@ export default class Index extends Component {
   }
 
   commit = () => {
-    const {form} = this.state
-    if(this.validate() !== true){
+    const { form } = this.state
+
+    if (this.validate() !== true) {
       this.setState({
-        showToast:true
+        showToast: true
       })
       return;
     }
-    post(`${baseUrl}/api/userLogin/bindStudentById`,{
-      ...form,
-    })
-    this.setState({
-      writeDownMsg: false
+    let self = this
+    Taro.getStorage({
+      key: 'data',
+      success(res) {
+        let data = JSON.parse(res.data)
+        addStudentMessage({
+          ...form,
+          openId: data.openId
+        }).then(res => {
+          self.setState({
+            writeDownMsg: false
+          })
+        })
+
+      }
     })
   }
 
   validate = () => {
-    const {form} = this.state
-    if(!(/^1(3|4|5|6|7|8|9)\d{9}$/.test(form.phone))){
+    const { form } = this.state
+    if (!(/^1(3|4|5|6|7|8|9)\d{9}$/.test(form.phone))) {
       return "手机号"
     }
-    if(!form.studentName){
+    if (!form.name) {
       return "学生姓名"
     }
     return true
@@ -177,9 +207,12 @@ export default class Index extends Component {
     })
   }
 
+  courseDetail = (item) => {
+
+  }
   render() {
-    const { daysLessons, writeDownMsg,level } = this.state
-    
+    const { daysLessons, writeDownMsg, level } = this.state
+
     return (
       <View className="index">
 
@@ -194,7 +227,9 @@ export default class Index extends Component {
             this.state.array.map((res, index) => {
               return (
                 <SwiperItem key={`sql_${index}`}>
-                  <View className="indexBannerImg" style={{ backgroundImage: `url(${res.url})` }}></View>
+                  <View className="indexBannerImgContainer">
+                    <Image className="indexBannerImg" src={`${res.url}`}></Image>
+                  </View>
                 </SwiperItem>
               )
 
@@ -224,11 +259,11 @@ export default class Index extends Component {
         {
           daysLessons.map((item, index) => {
             return (
-              <View className="indexDaysLessons" key={`duelLesson_${index}`}>
+              <View className="indexDaysLessons" key={`duelLesson_${index}`} onClick={() => this.courseDetail(item)}>
                 <View style={{ backgroundImage: `url(${image_url}${item.courseType.cover})` }} className="indexCardCover"></View>
                 <Text className="indexDaysLessonsDesc">
                   {/* {this.getDesc(item.classContent)} */}
-                  {!!item.classContent?this.getDesc(item.classContent):"暂无描述"}
+                  {!!item.classContent ? this.getDesc(item.classContent) : "暂无描述"}
                 </Text>
 
                 <Text className="indexDaysLessonsDate">{moment(item.classStartTime).format("YYYY-MM-DD")}</Text>
@@ -254,20 +289,20 @@ export default class Index extends Component {
           current={this.state.current}
         />
 
-        <Modal 
-        commit={this.commit} 
-        value={writeDownMsg} 
-        onChange={this.onChange} 
-        level={level}>
+        <Modal
+          commit={this.commit}
+          value={writeDownMsg}
+          onChange={this.onChange}
+          level={level}>
         </Modal>
 
         <AtToast isOpened={this.state.showToast}
-        onClose={()=>{
-          this.setState({
-            showToast:false
-          })
-        }}
-        text={`${this.validate()}有误,请重新输入`} icon="{icon}" status="error" duration={2000}></AtToast>
+          onClose={() => {
+            this.setState({
+              showToast: false
+            })
+          }}
+          text={`${this.validate()}有误,请重新输入`} icon="{icon}" status="error" duration={2000}></AtToast>
       </View>
 
 

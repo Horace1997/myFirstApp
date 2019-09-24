@@ -1,8 +1,6 @@
 import Taro, { Component, Config } from '@tarojs/taro'
-import { View, Text } from '@tarojs/components'
-import { AtTabBar, AtAvatar,AtIcon } from 'taro-ui';
+import { View, Text, Image } from '@tarojs/components'
 import './index.scss';
-import avatar from "../../public/images/login.png";
 // import background from "../../public/images/background.png";
 // import badge from "../../public/images/badge2.png";
 // import err from "../../public/images/home.png";
@@ -11,15 +9,23 @@ export default class Index extends Component {
 
 
   state = {
-    current: 1,
-    massageArray: [
-      { title: "段位", result: "铂金" },
-      { title: "年龄", result: "16" },
-      { title: "职业", result: "学生" },
-    ],
-    menuArray: [
-      { text: "我的课程" ,icon:"star-2",color:"#ff69b4"},
-      { text: "我的能力值",icon:"user",color:"#00bfff" }
+    description: [
+      `我司于2019年2月28日建立`,
+      `法人代表：Roger `,
+      `运营项目：XXXXX`,
+      `合作伙伴：Horace Edison Carmen`,
+      `电话：13112345678`,
+      `地址：白云区万达承运足球场`,
+      `主要项目：
+      幼儿足球启蒙
+      少儿足球青训
+      中学生足球培训
+      中考体育足球
+      足球商业活动
+      创新三项：
+      个人足球技术提升教案 
+      独立幼儿足球启蒙成长教案
+      大数据app记录小朋友每一次的成长`
     ]
   }
   componentWillMount() { }
@@ -49,63 +55,41 @@ export default class Index extends Component {
     navigationBarTitleText: '关于我们'
   }
   render() {
+    const { description } = this.state;
     return (
       <View>
+        <View className="aboutCompny">
+          <Text>
+            XXXXX有限公司
+        </Text>
 
+          <Image
+            className="aboutUniCode"
+            src={require("../../assets/images/unicode.jpeg")}>
 
+          </Image>
+          <View className="aboutDescription">
 
-        <View className="pcMessageCard">
-          <View className="left">
-            <AtAvatar
-              image={avatar}
-              circle
-              size="large"
-              className="pcAvatar"
-            ></AtAvatar>
-            <Text>Roger</Text>
-          </View>
+            {description.map((item, index) => {
+              return (
+                <Text key={`description_${index}`}>
+                  {item}
+                </Text>
+              )
+            })
 
-          <View className="right">
-            {
-              this.state.massageArray.map(res => {
-                return (
-                  <Text className="pcMessage">
-                    {res.title}:{res.result}
-                  </Text>
-                )
-              })
             }
-
           </View>
 
 
-        </View>
-
-        <View className="pcMenu">
-          {this.state.menuArray.map(res => {
-            return (
-              <View className="pcMenuItems">
-                <AtIcon value={res.icon} size={18} color={res.color}></AtIcon>
-                <Text>{res.text}</Text>
-                <AtIcon value="chevron-right" color="#00000019" className="pcMenuRight"></AtIcon>
-              </View>
-            )
-          })
-          }
-
 
         </View>
-        <AtTabBar
-          tabList={[
-            { title: '首页', iconType: 'home' },
-            { title: '我的', iconType: 'user' },
-          ]}
-          fixed={true}
-          iconSize={22}
-          fontSize={12}
-          onClick={this.handleClick}
-          current={this.state.current}
-        />
+
+
+
+
+
+
 
       </View>
     )

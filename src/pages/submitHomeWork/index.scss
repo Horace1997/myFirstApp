@@ -1,0 +1,32 @@
+@import "~taro-ui/dist/style/components/image-picker.scss";
+@import "~taro-ui/dist/style/components/icon.scss";
+.picArray{
+    padding-left: 60px;
+    padding-right: 20px;
+    .submitHwImage{
+        width: 200px;
+        height: 200px;
+        margin-right: 20px;
+    }
+}
+
+.submitTitle{
+    text-align:center;
+    padding-bottom: 30px;
+}
+
+.submitDescription{
+    padding-left: 60px;
+    padding-right: 60px;
+    padding-top: 40px;
+    position: relative;
+
+}
+
+.submitUpload{
+    margin-top: 50px;
+}
+
+.submitBtn{
+    margin-top: 100px;
+}
