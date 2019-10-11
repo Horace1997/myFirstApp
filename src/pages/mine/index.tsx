@@ -188,7 +188,7 @@ export default class Index extends Component {
 
   render() {
     const { authourize, pcMsg, write, courseData,studentNameList ,currentStudentData} = this.state
-    const rank = ["青铜","白银","黄金","铂金","钻石","最强王者"]
+    const rank = ["飞机能手","铁血防守","中场大师","进球机器","比赛终结者","球王"]
     return (
       <View>
         <Modal
