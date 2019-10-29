@@ -41,7 +41,7 @@ export default class Index extends Component {
        "位置"
     ],
     menuArray: [
-      // { text: "我的课程", icon: "star-2", color: "#ff69b4", url: "/pages/lessons/index" },
+      { text: "我的课程", icon: "star-2", color: "#ff69b4", url: "/pages/lessons/index" },
       { text: "我的能力值", icon: "user", color: "#00bfff", url: "/pages/myAbility/index" },
       { text: "我的作业", icon: "list", color: "#e4393c", url: "/pages/submitHomeWork/index" },
       { text: "添加信息绑定", icon: "add", color: "#e49", onclick: "addMessage" },

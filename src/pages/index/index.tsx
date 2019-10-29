@@ -83,7 +83,6 @@ export default class Index extends Component {
 
   getLessons = () => {
     getLesson().then(res => {
-      console.log(res.data)
       this.setState({
         daysLessons: res.data.resultData
       })
@@ -134,10 +133,6 @@ export default class Index extends Component {
           data
         })
       }
-
-
-
-
     })
   }
 

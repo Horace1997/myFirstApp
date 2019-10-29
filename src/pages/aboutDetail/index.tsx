@@ -90,6 +90,7 @@ export default class Index extends Component {
                 <View className="aboutDetailTitle">
                     <Text className="aboutDetailStatus" style={{ backgroundColor: `${this.getStatus(lessonsStatus).color}` }}>{this.getStatus(lessonsStatus).text}</Text>
                     <Text className="aboutDetailName">{course.name}</Text>
+                    
                     <Text className="aboutDetailDesc">{course.description}</Text>
                     <View className="aboutDetailCard">
                         <View className="aboutDetailCardTitle">

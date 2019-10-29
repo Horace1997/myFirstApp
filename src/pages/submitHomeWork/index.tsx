@@ -1,7 +1,7 @@
 import Taro, { Component } from "@tarojs/taro";
-import { View, Image, Text,Button } from "@tarojs/components"
-import { AtImagePicker } from "taro-ui";
-
+import { View, Text,Button } from "@tarojs/components"
+import { AtImagePicker} from "taro-ui";
+import {getStudentHomework} from "../../service/api/api";
 import "./index.scss"
 const pic = require(`../../assets/images/background.jpeg`)
 const pic1 = require("../../assets/images/background2.jpeg")
@@ -14,10 +14,19 @@ export default class Index extends Component {
             key:`data`,
             success(res){
                 let result = JSON.parse(res.data)
-                self.setState({
-                    studentId:result.id,
-                    openId:result.openId
+                
+                console.log(result)
+                getStudentHomework({studentId:result.studentList[0].id,userId:result.id}).then(response=>{
+                    console.log(response)
+                    self.setState({
+                        courseHomework:response.data
+                    })
                 })
+                self.setState({
+                    studentId:result.studentList[0].id,
+                    userId:result.openId
+                })
+                
             }
         })
     }
@@ -71,7 +80,7 @@ export default class Index extends Component {
                 <View className="submitTitle">
                     <Text>今期功课</Text>
                 </View>
-                <View className="picArray">
+                {/* <View className="picArray">
                     {
                         picArray.map((item, index) => {
                         return (
@@ -86,15 +95,18 @@ export default class Index extends Component {
                         )
                     })
                     }
-                </View>
+                </View> */}
 
                 <View className="submitDescription">
-                    <Text>作业描述：XXXXXXXX</Text>
+                    <Text>作业描述</Text>
 
                     <AtImagePicker
+                        length={1}
                         onChange={this.getImage}
                         files={this.state.images}
                         className="submitUpload"
+                        showAddBtn={this.state.images.length<1}
+
                     >
 
                     </AtImagePicker>

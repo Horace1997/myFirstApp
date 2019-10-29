@@ -1,6 +1,12 @@
 // import formData from "form-data";
 import { post, baseUrl,get } from "../../tools/common";
 
+
+export const getStudentHomework = (data) =>{
+    return post(`${baseUrl}/api/totalCourse/getTotalCourseByStudentId`,data)
+}
+
+
 export const makeOppointment = (obj) => {
     return post(`${baseUrl}/api/orderCourse/reserveCourseDetail`, obj)
 }
