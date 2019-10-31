@@ -1,8 +1,9 @@
 import Taro, { Component, Config } from '@tarojs/taro'
-import { View, Swiper, SwiperItem, Text, } from '@tarojs/components'
+import { View, Swiper, SwiperItem, Text, Image } from '@tarojs/components'
 import './index.scss';
+import { AtProgress } from "taro-ui"
 import { image_url } from '../../tools/common';
-
+import { getCourseDetail } from "../../service/api/api";
 // import background from "../../public/images/background.png";
 // import badge from "../../public/images/badge2.png";
 // import err from "../../public/images/home.png";
@@ -19,15 +20,30 @@ export default class Index extends Component {
         lessonsName: "青训初级班",
         lessonsStatus: 1,
         lessonDesc: "由黄锦麟老师细心指导，为求完成这个完美而对少儿有益的全新课程，让同学们体验到全所未有的痛快",
-        lessonsStudentCensus: 1,
-        lessonsClassCensus: 1,
-        course:{}
+
+        course: {},
+        courseDetailIntroduce: {
+            lessonsStudentCensus: 70,
+            lessonsCoachCensus: 1,
+            coach: [
+                {
+                    coachName: "黄锦麟--Roger",
+                    coachIntroduce: "曾经是草鸡联队出色的守门员，华软校队的最佳MVP曾经是草鸡联队出色的守门员，华软校队的最佳MVP曾经是草鸡联队出色的守门员，华软校队的最佳MVP曾经是草鸡联队出色的守门员，华软校队的最佳MVP曾经是草鸡联队出色的守门员，华软校队的最佳MVP曾经是草鸡联队出色的守门员，华软校队的最佳MVP"
+                },{
+                    coachName: "黄锦麟--Roger",
+                    coachIntroduce: "曾经是草鸡联队出色的守门员，华软校队的最佳MVP曾经是草鸡联队出色的守门员，华软校队的最佳MVP曾经是草鸡联队出色的守门员，华软校队的最佳MVP曾经是草鸡联队出色的守门员，华软校队的最佳MVP曾经是草鸡联队出色的守门员，华软校队的最佳MVP曾经是草鸡联队出色的守门员，华软校队的最佳MVP"
+                }
+            ]
+        }
     }
     componentWillMount() { }
 
     componentDidMount() {
         let course = JSON.parse(this.$router.params.id)
-
+        // console.log(course)
+        getCourseDetail({ courseDetailId: course.courseDetails[0].id }).then(res => {
+            console.log(res)
+        })
         this.setState({
             course
         })
@@ -74,39 +90,72 @@ export default class Index extends Component {
         navigationBarTitleText: '课程介绍'
     }
     render() {
-        const { lessonsArray, lessonsName, lessonsStatus, lessonDesc, lessonsStudentCensus, lessonsClassCensus,course } = this.state
+        const { lessonsStatus, course, courseDetailIntroduce } = this.state
         return (
             <View className="aboutDetailMain">
                 <Swiper>
-                            <SwiperItem> 
-                                <View style={{backgroundImage:`url(${image_url+course.cover})`}} className="aboutDetailSwiperItem"
-                                >
-                                </View>
-                             </SwiperItem> 
-                       )
+                    <SwiperItem>
+                        <View style={{ backgroundImage: `url(${image_url + course.cover})` }} className="aboutDetailSwiperItem"
+                        >
+                        </View>
+                    </SwiperItem>
+                    )
 
                 </Swiper>
 
                 <View className="aboutDetailTitle">
                     <Text className="aboutDetailStatus" style={{ backgroundColor: `${this.getStatus(lessonsStatus).color}` }}>{this.getStatus(lessonsStatus).text}</Text>
                     <Text className="aboutDetailName">{course.name}</Text>
-                    
+
                     <Text className="aboutDetailDesc">{course.description}</Text>
+
+                    <AtProgress
+                        color="yellowgreen"
+                        percent={courseDetailIntroduce.lessonsStudentCensus}>
+
+                    </AtProgress>
+
                     <View className="aboutDetailCard">
                         <View className="aboutDetailCardTitle">
                             <Text className="aboutDetailCardTitleText">学员人数</Text>
                         </View>
                         <Text className="aboutDetailCardText">
-                            {lessonsStudentCensus}
+                            {courseDetailIntroduce.lessonsStudentCensus}
                         </Text>
                     </View>
                     <View className="aboutDetailCard">
                         <View className="aboutDetailCardTitle">
-                            <Text className="aboutDetailCardTitleText">学员人数</Text>
+                            <Text className="aboutDetailCardTitleText">教练人数</Text>
                         </View>
                         <Text className="aboutDetailCardText">
-                            {lessonsStudentCensus}
+                            {courseDetailIntroduce.lessonsCoachCensus}
                         </Text>
+                    </View>
+
+                    <View className="aboutDetailCoachDiv">
+                        <Text className="coachMessage">教练信息</Text>
+
+                        {
+                            courseDetailIntroduce.coach.length > 0 &&
+                            courseDetailIntroduce.coach.map((v, i) => {
+                                return (
+                                    <View className="coachItems">
+
+                                        <View className="coachTitle">
+                                            <Image className="coachAvatar" src="https://football.edisonmiao.com/static/menuIcon/95007c33865525e9c20ebcb1ed7df64.jpg"></Image>
+                                            <Text >{v.coachName}</Text>
+                                        </View>
+
+                                        <View className="coachIntroduce" key={`coachItem_00${i}`}>
+                                            <p>
+                                                {v.coachIntroduce}
+                                            </p>
+                                        </View>
+
+                                    </View>
+                                )
+                            })
+                        }
                     </View>
                 </View>
             </View>

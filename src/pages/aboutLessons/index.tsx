@@ -16,6 +16,8 @@ export default class Index extends Component {
     componentWillMount() { }
 
     componentDidMount() {
+
+        
         get(`${baseUrl}/api/courseType/getCourseTypeList`).then(res => {
             this.setState({
                 lessonsArray: res.data.resultData

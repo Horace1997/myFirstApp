@@ -2,6 +2,11 @@
 import { post, baseUrl,get } from "../../tools/common";
 
 
+
+export const getCourseDetail = (id) =>{
+    return post(`${baseUrl}/api/courseDetail/getCourseTypeByCourseDetail`,id)
+}   
+
 export const getStudentHomework = (data) =>{
     return post(`${baseUrl}/api/totalCourse/getTotalCourseByStudentId`,data)
 }
