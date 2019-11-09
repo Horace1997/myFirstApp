@@ -1,7 +1,7 @@
 import Taro, { Component } from "@tarojs/taro";
 import { View, Text,Button } from "@tarojs/components"
-import { AtImagePicker} from "taro-ui";
-import {getStudentHomework} from "../../service/api/api";
+import { AtImagePicker, AtTextarea} from "taro-ui";
+import {getStudentHomework , submitHomework} from "../../service/api/api";
 import "./index.scss"
 const pic = require(`../../assets/images/background.jpeg`)
 const pic1 = require("../../assets/images/background2.jpeg")
@@ -12,19 +12,18 @@ export default class Index extends Component {
         let self = this
         Taro.getStorage({
             key:`data`,
-            success(res){
-                let result = JSON.parse(res.data)
-                
+            success(res:Object):any{
+                let result = JSON.parse((res as any).data)
                 console.log(result)
-                getStudentHomework({studentId:result.studentList[0].id,userId:result.id}).then(response=>{
+                getStudentHomework({studentId:result.studentList[0].id}).then(response=>{
                     console.log(response)
                     self.setState({
-                        courseHomework:response.data
+                        courseHomework:response.data.resultData[0]
                     })
                 })
                 self.setState({
                     studentId:result.studentList[0].id,
-                    userId:result.openId
+                    openId:result.openId
                 })
                 
             }
@@ -33,15 +32,18 @@ export default class Index extends Component {
 
 
     state = {
-        homeWork:{
-            homeWorkDescription:``,
+        courseHomework:{
+            assignmentContent:``,
             homeWorkImages:[],
-            assignmentId:``
+            id:``,
+            dealLine:``,
+            title:``,
+            courseDetailId:``
         },
         studentId:``,
         openId:``,
         images:[],
-
+        content:``
     }
 
     loadImage = () => {
@@ -54,31 +56,43 @@ export default class Index extends Component {
 
 
     submitHomeWork = () =>{
-        const {studentId,openId,images,homeWork} = this.state
+        const {studentId,openId,images,courseHomework,content} = this.state
         let obj = {
             studentId,
             openId,
             images,
-            assignmentId:homeWork.assignmentId,
-            content:``
+            assignmentId:courseHomework.id,
+            content
         }
-        console.log(obj)
+
+        submitHomework(obj).then(res=>{
+            console.log(res)
+        })
+        
     }
 
     getImage = (files) => {
+        console.log(files)
         this.setState({
             images:files
         })
     }
 
+    getContent = (value) =>{
+        console.log(value)
+        this.setState({
+            content:value.detail.value
+        })
+    }
+
 
     render() {
-        const {homeWork} = this.state;
+        const {courseHomework} = this.state;
 
         return (
             <View className="submitMain">
                 <View className="submitTitle">
-                    <Text>今期功课</Text>
+                    <Text>{courseHomework.title}</Text>
                 </View>
                 {/* <View className="picArray">
                     {
@@ -98,15 +112,20 @@ export default class Index extends Component {
                 </View> */}
 
                 <View className="submitDescription">
-                    <Text>作业描述</Text>
+                    <Text>描述：{courseHomework.assignmentContent}</Text>
+                    <AtTextarea 
+                    value={this.state.content}
+                    onChange={this.getContent} 
+                    placeholder="请输入作业内容的表述"
+                    name="getContent">
 
+                    </AtTextarea>
                     <AtImagePicker
                         length={1}
                         onChange={this.getImage}
                         files={this.state.images}
                         className="submitUpload"
                         showAddBtn={this.state.images.length<1}
-
                     >
 
                     </AtImagePicker>

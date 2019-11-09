@@ -121,12 +121,14 @@ export default class Index extends Component {
 
   getUserInfo(code) {
     getUserInformation(code).then(res => {
+
       if (!res.data.resultData.studentList) {
         this.setState({
           writeDownMsg: true
         })
       }
       if (res.data.resultData) {
+        
         let data = JSON.stringify(res.data.resultData)
         Taro.setStorage({
           key: `data`,

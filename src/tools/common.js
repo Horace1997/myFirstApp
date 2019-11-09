@@ -34,6 +34,10 @@ export const post = (url,data)=>{
       )
 }
 
+export const consoleFunc = (url,data) =>{
+  console.log(`url:${url}`,`data:${JSON.stringify(data)}`)
+}
+
 
 
 export default {

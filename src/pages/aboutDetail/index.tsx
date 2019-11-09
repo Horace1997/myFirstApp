@@ -22,7 +22,7 @@ export default class Index extends Component {
         lessonDesc: "由黄锦麟老师细心指导，为求完成这个完美而对少儿有益的全新课程，让同学们体验到全所未有的痛快",
 
         course: {},
-        courseDetailIntroduce: {
+       
             lessonsStudentCensus: 70,
             lessonsCoachCensus: 1,
             coach: [
@@ -34,18 +34,18 @@ export default class Index extends Component {
                     coachIntroduce: "曾经是草鸡联队出色的守门员，华软校队的最佳MVP曾经是草鸡联队出色的守门员，华软校队的最佳MVP曾经是草鸡联队出色的守门员，华软校队的最佳MVP曾经是草鸡联队出色的守门员，华软校队的最佳MVP曾经是草鸡联队出色的守门员，华软校队的最佳MVP曾经是草鸡联队出色的守门员，华软校队的最佳MVP"
                 }
             ]
-        }
     }
     componentWillMount() { }
 
     componentDidMount() {
         let course = JSON.parse(this.$router.params.id)
-        // console.log(course)
-        getCourseDetail({ courseDetailId: course.courseDetails[0].id }).then(res => {
-            console.log(res)
-        })
+        console.log(course)
+        if(course.courseDetails.length>0){
+
+        }
         this.setState({
-            course
+            course,
+            coach:course.coachSet
         })
     }
 
@@ -90,7 +90,7 @@ export default class Index extends Component {
         navigationBarTitleText: '课程介绍'
     }
     render() {
-        const { lessonsStatus, course, courseDetailIntroduce } = this.state
+        const { lessonsStatus, course, coach,lessonsCoachCensus,lessonsStudentCensus } = this.state
         return (
             <View className="aboutDetailMain">
                 <Swiper>
@@ -111,7 +111,7 @@ export default class Index extends Component {
 
                     <AtProgress
                         color="yellowgreen"
-                        percent={courseDetailIntroduce.lessonsStudentCensus}>
+                        percent={lessonsStudentCensus}>
 
                     </AtProgress>
 
@@ -120,7 +120,7 @@ export default class Index extends Component {
                             <Text className="aboutDetailCardTitleText">学员人数</Text>
                         </View>
                         <Text className="aboutDetailCardText">
-                            {courseDetailIntroduce.lessonsStudentCensus}
+                            {lessonsStudentCensus}
                         </Text>
                     </View>
                     <View className="aboutDetailCard">
@@ -128,7 +128,7 @@ export default class Index extends Component {
                             <Text className="aboutDetailCardTitleText">教练人数</Text>
                         </View>
                         <Text className="aboutDetailCardText">
-                            {courseDetailIntroduce.lessonsCoachCensus}
+                            {coach.length}
                         </Text>
                     </View>
 
@@ -136,19 +136,19 @@ export default class Index extends Component {
                         <Text className="coachMessage">教练信息</Text>
 
                         {
-                            courseDetailIntroduce.coach.length > 0 &&
-                            courseDetailIntroduce.coach.map((v, i) => {
+                            coach.length > 0 &&
+                            coach.map((v, i) => {
                                 return (
                                     <View className="coachItems">
 
                                         <View className="coachTitle">
                                             <Image className="coachAvatar" src="https://football.edisonmiao.com/static/menuIcon/95007c33865525e9c20ebcb1ed7df64.jpg"></Image>
-                                            <Text >{v.coachName}</Text>
+                                            <Text >{v.name}</Text>
                                         </View>
 
                                         <View className="coachIntroduce" key={`coachItem_00${i}`}>
                                             <p>
-                                                {v.coachIntroduce}
+                                                {v.introduce}
                                             </p>
                                         </View>
 

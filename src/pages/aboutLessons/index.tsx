@@ -19,6 +19,7 @@ export default class Index extends Component {
 
         
         get(`${baseUrl}/api/courseType/getCourseTypeList`).then(res => {
+            console.log(res.data.resultData)
             this.setState({
                 lessonsArray: res.data.resultData
             })
@@ -51,7 +52,7 @@ export default class Index extends Component {
      * 提示和声明 navigationBarTextStyle: 'black' | 'white' 类型冲突, 需要显示声明类型
      */
     config: Config = {
-        navigationBarTitleText: '课程预约'
+        navigationBarTitleText: '关于课程'
     }
     render() {
         const { lessonsArray } = this.state
