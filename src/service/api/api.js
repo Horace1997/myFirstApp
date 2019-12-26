@@ -2,6 +2,15 @@
 import {consoleFunc, post, baseUrl,get } from "../../tools/common";
 
 
+
+
+export const getAbility = (id) =>{
+    return post(`${baseUrl}/api/student/getStudentAbilityData`,{studentId:id})
+}
+export const getImgUrl = (data) =>{
+    return post(`${baseUrl}/api/miniProgramUpload/uploadFile`,data)
+}
+
 export const getCourseDetail = (id) =>{
     consoleFunc(`/api/courseDetail/getCourseTypeByCourseDetail`,id)
     return post(`${baseUrl}/api/courseDetail/getCourseTypeByCourseDetail`,id)

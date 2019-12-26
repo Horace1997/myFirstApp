@@ -2,21 +2,45 @@ import Taro, { Component } from "@tarojs/taro";
 import Chart from 'taro-echarts'
 import { View } from "@tarojs/components"
 import {AtProgress,} from "taro-ui"
+import {getAbility} from "../../service/api/api";
 export default class Index extends Component {
 
-  componentDidMount(){
-    
-  }
-
-
   state={
-    Ability:[
-      
-    ]
+    pass:0,
+    intercept:0,
+    dribble:0,
+    surpass:0,
+    skill:0,
+    shoot:0
+  }
+  componentDidMount(){
+
+    // getAbility()
+    let self = this
+    Taro.getStorage({
+      key:`data`,
+      success:(res:any)=>{
+      let defaultStudentId = JSON.parse(res.data).studentList[0].id
+        getAbility(defaultStudentId).then(result=>{
+          const temp = result.data.resultData
+          console.log(temp)
+          self.setState({
+            pass:temp.pass,
+            dribble:temp.dribble,
+            shoot:temp.shoot,
+            skill:temp.skill,
+            surpass:temp.surpass,
+            intercept:temp.intercept
+          })
+        })
+      } 
+    })
   }
 
 
   render() {
+    const {pass,surpass,intercept,dribble,skill,shoot} = this.state
+    console.log(pass,surpass,intercept,dribble,skill,shoot)
     return (
       <View className="myAbMain">
         <View className="myAbRadar">
@@ -72,7 +96,7 @@ export default class Index extends Component {
                   radarIndex: 0,
                   data: [
                     {
-                      value: [80, 80, 95, 70, 70, 60],
+                      value: [surpass, pass, shoot, intercept, skill, dribble],
                       name: '李四',
                       areaStyle: {
                         normal: {
